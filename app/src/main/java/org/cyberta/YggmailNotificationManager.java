@@ -18,17 +18,17 @@ import static org.cyberta.YggmailService.ACTION_STOP;
 public class YggmailNotificationManager {
 
         private final Context context;
-        private  final static int YGGMAIL_NOTIFICATION_ID = 1;
+        public final static int YGGMAIL_NOTIFICATION_ID = 1;
         private final static String NOTIFICATION_CHANNEL_NEWSTATUS_ID = "YGGMAIL_NOTIFICATION_CHANNEL_NEWSTATUS_ID";
 
         public YggmailNotificationManager(@NonNull Context context) {
             this.context = context;
         }
 
-        public void buildForegroundServiceNotification() {
+        public Notification buildForegroundServiceNotification() {
             NotificationManager notificationManager = initNotificationManager();
             if (notificationManager == null) {
-                return;
+                return null;
             }
             NotificationCompat.Action.Builder actionBuilder = new NotificationCompat.Action.Builder(android.R.drawable.ic_menu_close_clear_cancel,
                     "STOP", getStopIntent());
@@ -39,7 +39,8 @@ public class YggmailNotificationManager {
                     .setContentTitle("YGGMAIL SERVICE")
                     .addAction(actionBuilder.build());
 
-            notificationManager.notify(YGGMAIL_NOTIFICATION_ID, notificationBuilder.build());
+            return notificationBuilder.build();
+            //notificationManager.notify(YGGMAIL_NOTIFICATION_ID, notificationBuilder.build());
         }
 
     private PendingIntent getStopIntent() {
@@ -49,14 +50,14 @@ public class YggmailNotificationManager {
     }
 
         private NotificationManager initNotificationManager() {
-            NotificationManager yggmailNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            if (yggmailNotificationManager == null) {
+            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            if (notificationManager == null) {
                 return null;
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                createNotificationChannel(yggmailNotificationManager);
+                createNotificationChannel(notificationManager);
             }
-            return yggmailNotificationManager;
+            return notificationManager;
         }
 
         @TargetApi(26)

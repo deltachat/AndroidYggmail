@@ -1,0 +1,3 @@
+[submodule "yggmail"]
+	path = yggmail
+	url = git@github.com:cyBerta/yggmail.git

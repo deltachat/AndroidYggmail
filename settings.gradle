@@ -1,0 +1,3 @@
+rootProject.name = "AndroidYggMail"
+include ':app'
+include ':app:yggmail'

@@ -1,11 +1,14 @@
 package org.cyberta;
 
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.core.os.BuildCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
@@ -32,8 +35,18 @@ public class FirstFragment extends Fragment {
         binding.buttonFirst.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavHostFragment.findNavController(FirstFragment.this)
-                        .navigate(R.id.action_FirstFragment_to_SecondFragment);
+                try {
+                    Intent intent = new Intent(FirstFragment.this.requireContext(), YggmailService.class);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        FirstFragment.this.getActivity().startForegroundService(intent);
+                    } else {
+                        FirstFragment.this.getActivity().startService(intent);
+                    }
+                } catch (IllegalStateException e) {
+                   e.printStackTrace();
+                }
+                /*NavHostFragment.findNavController(FirstFragment.this)
+                        .navigate(R.id.action_FirstFragment_to_SecondFragment);*/
             }
         });
     }

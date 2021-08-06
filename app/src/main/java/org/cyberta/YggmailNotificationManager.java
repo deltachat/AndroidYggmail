@@ -34,7 +34,6 @@ public class YggmailNotificationManager {
                     "STOP", getStopIntent());
             NotificationCompat.Builder notificationBuilder = initNotificationBuilderDefaults();
             notificationBuilder
-                    .setSmallIcon(R.drawable.ic_launcher_foreground)
                     .setWhen(System.currentTimeMillis())
                     .setContentTitle("YGGMAIL SERVICE")
                     .addAction(actionBuilder.build());

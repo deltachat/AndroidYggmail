@@ -98,6 +98,7 @@ public class FirstFragment extends Fragment implements Observer {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+        YggmailOberservable.getInstance().deleteObserver(this);
     }
 
     @Override

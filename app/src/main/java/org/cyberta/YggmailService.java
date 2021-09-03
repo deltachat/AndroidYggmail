@@ -78,21 +78,18 @@ public class YggmailService extends Service {
             Log.d(TAG, "onStartCommand ACTION_STOP");
 
             if (yggmail != null) {
-                Log.d(TAG, "stopping yggmail...");
                 YggmailOberservable.getInstance().setStatus(YggmailOberservable.Status.ShuttingDown);
                 yggmail.stop();
                 YggmailOberservable.getInstance().setStatus(YggmailOberservable.Status.Stopped);
             }
 
-            Log.d(TAG, "cancelling Notifications");
             notificationManager.cancelNotifications();
 
-            Log.d(TAG, "stopping YggmailService");
             stopSelf();
             return START_NOT_STICKY;
         }
 
-        Log.d(TAG, "onStartCommand ACTION_START");
+        Log.d(TAG, "onStartCommand start yggmail");
 
         YggmailOberservable.getInstance().setStatus(YggmailOberservable.Status.Running);
         Log.d(TAG, getApplicationContext().getFilesDir().getPath()+"/yggmail.db");

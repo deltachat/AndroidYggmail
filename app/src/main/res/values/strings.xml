@@ -5,8 +5,15 @@
     <string name="first_fragment_label">Yggmail Android Experiment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="start">Start</string>
+    <string name="stop">Stop</string>
     <string name="previous">Previous</string>
+    <string name="restart">Restart</string>
 
     <string name="hello_first_fragment">Account name will be copied to clipboard if you press \'start\' \n Password: delta \n IMAP server: localhost \n IMAP port: 1143 \n IMAP Security: OFF \n SMTP server: localhost \n SMTP port: 1025 \n SMTP security: OFF</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="notification_running">Yggmail is running.</string>
+    <string name="notification_error">An error occurred.</string>
+    <string name="notification_channel_name">Yggmail status</string>
+    <string name="notification_channel_description">Informs about Yggmail status and allows to stop and restart the Yggmail background service.</string>
+
 </resources>

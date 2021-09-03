@@ -34,7 +34,7 @@ public class YggmailNotificationManager {
                 "STOP", getStopIntent());
         NotificationCompat.Builder notificationBuilder = initNotificationBuilderDefaults();
         notificationBuilder
-                .setSmallIcon(android.R.drawable.star_on)
+                .setSmallIcon(R.drawable.star_on)
                 .setWhen(System.currentTimeMillis())
                 .setContentTitle(context.getString(R.string.notification_running))
                 .addAction(actionBuilder.build());
@@ -52,7 +52,7 @@ public class YggmailNotificationManager {
                 context.getString(R.string.restart), getStartIntent());
         NotificationCompat.Builder notificationBuilder = initNotificationBuilderDefaults();
         notificationBuilder
-                .setSmallIcon(android.R.drawable.ic_dialog_alert)
+                .setSmallIcon(R.drawable.ic_dialog_alert)
                 .setWhen(System.currentTimeMillis())
                 .setContentTitle(context.getString(R.string.notification_error))
                 .setContentText(error)

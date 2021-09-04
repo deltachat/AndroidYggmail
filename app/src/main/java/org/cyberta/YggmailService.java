@@ -12,6 +12,8 @@ import android.widget.Toast;
 import yggmail.Logger;
 import yggmail.Yggmail_;
 
+import static org.cyberta.PreferenceHelper.PREF_ON_BOOT;
+
 public class YggmailService extends Service {
 
     public static final String ACTION_STOP = "ACTION_STOP";
@@ -84,7 +86,7 @@ public class YggmailService extends Service {
             }
 
             notificationManager.cancelNotifications();
-
+            PreferenceHelper.putBoolean(getApplicationContext(), PREF_ON_BOOT, false);
             stopSelf();
             return START_NOT_STICKY;
         }
@@ -100,6 +102,7 @@ public class YggmailService extends Service {
                 "localhost:1143",
                 false,
                 "tcp://45.138.172.192:5001,tcp://94.130.203.208:5999,tcp://bunkertreff.ddns.net:5454,tcp://ygg.mkg20001.io:80,tcp://yugudorashiru.de:80");
+        PreferenceHelper.putBoolean(getApplicationContext(), PREF_ON_BOOT, true);
 
         try {
             Thread.sleep(1000);

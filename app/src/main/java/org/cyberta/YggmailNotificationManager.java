@@ -37,6 +37,7 @@ public class YggmailNotificationManager {
                 .setSmallIcon(R.drawable.star_on)
                 .setWhen(System.currentTimeMillis())
                 .setContentTitle(context.getString(R.string.notification_running))
+                .setContentIntent(getContentPendingIntent())
                 .addAction(actionBuilder.build());
 
         return notificationBuilder.build();
@@ -55,12 +56,18 @@ public class YggmailNotificationManager {
                 .setSmallIcon(R.drawable.ic_dialog_alert)
                 .setWhen(System.currentTimeMillis())
                 .setContentTitle(context.getString(R.string.notification_error))
-                .setContentText(error)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(error))
+                .setContentIntent(getContentPendingIntent())
                 .addAction(actionBuilder.build());
 
         notificationManager.notify(YGGMAIL_NOTIFICATION_ID, notificationBuilder.build());
     }
 
+    private PendingIntent getContentPendingIntent() {
+        Intent mainActivityIntent = new Intent(context, MainActivity.class);
+        mainActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        return PendingIntent.getActivity(context, 0, mainActivityIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+    }
     private PendingIntent getStopIntent() {
         Intent stopYggmailIntent = new Intent (context, YggmailService.class);
         stopYggmailIntent.setAction(ACTION_STOP);

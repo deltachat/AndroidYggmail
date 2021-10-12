@@ -12,8 +12,8 @@
         tools:layout="@layout/fragment_first">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_SecondFragment_to_LogFragment"
+            app:destination="@id/LogFragment" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
@@ -25,4 +25,10 @@
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/LogFragment"
+        android:name="org.cyberta.LogFragment"
+        android:label="@string/logs"
+        tools:layout="@layout/fragment_log_list" />
 </navigation>

@@ -1,28 +1,38 @@
 package org.cyberta;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
 import androidx.core.os.BuildCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import org.cyberta.databinding.FragmentFirstBinding;
 
+import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
 
+import static org.cyberta.FileLogger.DEBUG_LOG;
 import static org.cyberta.YggmailService.ACTION_STOP;
 
 public class FirstFragment extends Fragment implements Observer {
 
+    private static final String TAG = FirstFragment.class.getSimpleName();
     private FragmentFirstBinding binding;
-    private YggmailOberservable observable;
 
     @Override
     public View onCreateView(
@@ -32,6 +42,8 @@ public class FirstFragment extends Fragment implements Observer {
 
         YggmailOberservable.getInstance().addObserver(this);
         binding = FragmentFirstBinding.inflate(inflater, container, false);
+        setHasOptionsMenu(true);
+
         return binding.getRoot();
 
     }
@@ -93,6 +105,34 @@ public class FirstFragment extends Fragment implements Observer {
                 break;
         }
     }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_main, menu);
+    }
+
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        Context context = getContext();
+
+        if (context == null) {
+            return super.onOptionsItemSelected(item);
+        }
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_logs) {
+            NavHostFragment.findNavController(FirstFragment.this)
+                    .navigate(R.id.action_SecondFragment_to_LogFragment);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
 
     @Override
     public void onDestroyView() {

@@ -17,7 +17,6 @@
     <string name="notification_error">An error occurred.</string>
     <string name="notification_channel_name">Yggmail status</string>
     <string name="notification_channel_description">Informs about Yggmail status and allows to stop and restart the Yggmail background service.</string>
-    <string name="share_logs_message">Do you want to share the logs for the current session or all logs?</string>
     <string name="current_session">Current session</string>
     <string name="copied_to_clipboard">Copied to clipboard.</string>
     <string name="choose_app_to_share">Choose an app to share the logs</string>

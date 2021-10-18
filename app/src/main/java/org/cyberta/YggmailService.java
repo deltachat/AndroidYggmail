@@ -21,6 +21,7 @@ import java.io.IOException;
 import yggmail.Logger;
 import yggmail.Yggmail_;
 
+import static org.cyberta.PreferenceHelper.PREF_LOOKUP_LOCAL_PEERS;
 import static org.cyberta.PreferenceHelper.PREF_ON_BOOT;
 
 public class YggmailService extends Service {
@@ -116,7 +117,7 @@ public class YggmailService extends Service {
         yggmail.createPassword("delta");
         yggmail.start("localhost:1025",
                 "localhost:1143",
-                false,
+                PreferenceHelper.getBoolean(getApplicationContext(), PREF_LOOKUP_LOCAL_PEERS, false),
                 "tcp://45.138.172.192:5001,tcp://94.130.203.208:5999,tcp://bunkertreff.ddns.net:5454,tcp://ygg.mkg20001.io:80,tcp://yugudorashiru.de:80");
         PreferenceHelper.putBoolean(getApplicationContext(), PREF_ON_BOOT, true);
 

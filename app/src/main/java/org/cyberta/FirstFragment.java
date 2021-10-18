@@ -56,30 +56,18 @@ public class FirstFragment extends Fragment implements Observer {
         binding.buttonFirst.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    Intent intent = new Intent(FirstFragment.this.requireContext(), YggmailService.class);
-                    switch (YggmailOberservable.getInstance().getStatus()) {
-                        case Running:
-                            intent.setAction(ACTION_STOP);
-                            break;
-                        case Stopped:
-                            binding.buttonFirst.setEnabled(false);
-                            binding.buttonFirst.setText(R.string.stop);
-                            break;
-                        default:
-                            break;
-                    }
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        FirstFragment.this.getActivity().startForegroundService(intent);
-                    } else {
-                        FirstFragment.this.getActivity().startService(intent);
-                    }
-                } catch (IllegalStateException | NullPointerException e) {
-                   e.printStackTrace();
+                switch (YggmailOberservable.getInstance().getStatus()) {
+                    case Running:
+                        YggmailServiceCommand.stopYggmail(FirstFragment.this.getContext());
+                        break;
+                    case Stopped:
+                        binding.buttonFirst.setEnabled(false);
+                        binding.buttonFirst.setText(R.string.stop);
+                        YggmailServiceCommand.startYggmail(FirstFragment.this.getContext());
+                        break;
+                    default:
+                        break;
                 }
-                /*NavHostFragment.findNavController(FirstFragment.this)
-                        .navigate(R.id.action_FirstFragment_to_SecondFragment);*/
             }
         });
     }

@@ -3,11 +3,26 @@ package org.cyberta;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import static android.content.Context.MODE_PRIVATE;
 
 public class PreferenceHelper {
     public static String SHARED_PREFERENCES = "YGGMAIL_PREFERENCES";
     public static String PREF_ON_BOOT = "PREF_ON_BOOT";
+    public static String PREF_LOOKUP_LOCAL_PEERS = "PREF_LOOKUP_LOCAL_PEERS";
+    public static String PREF_PUBLIC_PEERS = "PREF_PUBLIC_PEERS";
+
+    public static Set<String> getStringSet(Context context, String key) {
+        SharedPreferences preferences = context.getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
+        return preferences.getStringSet(key, new HashSet<>());
+    }
+
+    public static void putStringSet(Context context, String key, Set<String> values) {
+        SharedPreferences preferences = context.getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
+        preferences.edit().putStringSet(key, values).apply();
+    }
 
     public static String getString(Context context, String key, String defValue) {
         SharedPreferences preferences = context.getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);

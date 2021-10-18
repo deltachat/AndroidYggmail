@@ -14,6 +14,9 @@
         <action
             android:id="@+id/action_SecondFragment_to_LogFragment"
             app:destination="@id/LogFragment" />
+        <action
+            android:id="@+id/action_SecondFragment_to_SettingsFragment"
+            app:destination="@+id/SettingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/SettingsFragment"

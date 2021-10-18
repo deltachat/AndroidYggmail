@@ -128,6 +128,9 @@ public class FirstFragment extends Fragment implements Observer {
             NavHostFragment.findNavController(FirstFragment.this)
                     .navigate(R.id.action_SecondFragment_to_LogFragment);
             return true;
+        } else if (id == R.id.action_settings) {
+            NavHostFragment.findNavController(FirstFragment.this)
+                    .navigate(R.id.action_SecondFragment_to_SettingsFragment);
         }
         return super.onOptionsItemSelected(item);
     }

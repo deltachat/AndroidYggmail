@@ -1,6 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/peer_item_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:weightSum="1">
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginLeft="@dimen/text_margin"
+        android:layout_marginStart="@dimen/text_margin"
+        android:layout_marginEnd="@dimen/text_margin"
+        android:layout_marginRight="@dimen/text_margin"
+        android:layout_marginTop="@dimen/text_vertical_list_margin"
+        android:layout_marginBottom="@dimen/text_vertical_list_margin"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:gravity="center_vertical"
+        tools:text="example text"
+        />
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_delete"
+        android:layout_gravity="center_vertical"
+        />
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/checkbox_off_background"
+        android:layout_gravity="center_vertical"
+        android:paddingStart="@dimen/text_margin"
+        android:paddingEnd="@dimen/text_margin"
+        />
 </androidx.appcompat.widget.LinearLayoutCompat>

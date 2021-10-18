@@ -3,7 +3,6 @@
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">Yggmail Android Experiment</string>
-    <string name="second_fragment_label">Second Fragment</string>
     <string name="start">Start</string>
     <string name="stop">Stop</string>
     <string name="previous">Previous</string>

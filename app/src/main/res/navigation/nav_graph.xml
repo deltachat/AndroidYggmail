@@ -16,10 +16,10 @@
             app:destination="@id/LogFragment" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="org.cyberta.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
+        android:id="@+id/SettingsFragment"
+        android:name="org.cyberta.SettingsFragment"
+        android:label="@string/action_settings"
+        tools:layout="@layout/fragment_settings">
 
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"

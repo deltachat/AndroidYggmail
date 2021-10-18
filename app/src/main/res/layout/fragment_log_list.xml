@@ -8,5 +8,5 @@
     android:layout_height="match_parent"
     app:layoutManager="LinearLayoutManager"
     tools:context=".LogFragment"
-    tools:listitem="@layout/fragment_log"
+    tools:listitem="@layout/log_item"
     />

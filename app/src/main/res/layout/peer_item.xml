@@ -1,13 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/peer_item_container"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:weightSum="1">
+    android:orientation="vertical"
+    android:weightSum="1"
+    >
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAllCaps="true"
+        android:paddingTop="@dimen/text_margin"
+        android:paddingStart="@dimen/text_margin"
+        android:paddingLeft="@dimen/text_margin"
+        android:paddingEnd="@dimen/text_margin"
+        android:paddingRight="@dimen/text_margin"
+        tools:text="France"
+        android:textAppearance="@android:style/TextAppearance.Holo.Medium"
+        android:textStyle="bold"
+        android:visibility="gone"
+        />
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/peer_item_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        android:weightSum="1">
     <TextView
-        android:id="@+id/content"
+        android:id="@+id/address_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -26,14 +51,17 @@
         android:layout_height="wrap_content"
         android:src="@android:drawable/ic_delete"
         android:layout_gravity="center_vertical"
+        android:visibility="gone"
         />
 
     <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/item_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@android:drawable/checkbox_off_background"
+        tools:src="@drawable/ic_checkbox_blank_circle_outline"
         android:layout_gravity="center_vertical"
         android:paddingStart="@dimen/text_margin"
         android:paddingEnd="@dimen/text_margin"
         />
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </androidx.appcompat.widget.LinearLayoutCompat>

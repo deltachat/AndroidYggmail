@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/peer_list"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/text_margin"
+    app:layout_constraintTop_toBottomOf="@id/description_public_peers"
+    app:layout_constraintBottom_toBottomOf="parent"
+    android:paddingTop="@dimen/text_margin"
+    tools:listitem="@layout/peer_item">
+</androidx.recyclerview.widget.RecyclerView>

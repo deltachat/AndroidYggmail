@@ -25,5 +25,8 @@
     <string name="description_public_peers">Enable this option if you want to communicate with users outside of your local network</string>
     <string name="add_public_peer">Add public peer</string>
     <string name="add">add</string>
+    <string name="start_on_boot">Start on boot</string>
+    <string name="select_n_peers">Select peers (%d)</string>
+    <string name="select_peers">Select peers</string>
 
 </resources>

@@ -4,25 +4,13 @@ import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
-import android.os.Handler;
-import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Looper;
-import android.os.Message;
 import android.util.Log;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-
 import yggmail.Logger;
 import yggmail.Yggmail_;
-
-import static org.cyberta.PreferenceHelper.PREF_LOOKUP_LOCAL_PEERS;
-import static org.cyberta.PreferenceHelper.PREF_ON_BOOT;
 
 public class YggmailService extends Service {
 
@@ -103,7 +91,6 @@ public class YggmailService extends Service {
             }
 
             notificationManager.cancelNotifications();
-            PreferenceHelper.putBoolean(getApplicationContext(), PREF_ON_BOOT, false);
             stopSelf();
             return START_NOT_STICKY;
         }
@@ -117,9 +104,8 @@ public class YggmailService extends Service {
         yggmail.createPassword("delta");
         yggmail.start("localhost:1025",
                 "localhost:1143",
-                PreferenceHelper.getBoolean(getApplicationContext(), PREF_LOOKUP_LOCAL_PEERS, false),
-                "tcp://45.138.172.192:5001,tcp://94.130.203.208:5999,tcp://bunkertreff.ddns.net:5454,tcp://ygg.mkg20001.io:80,tcp://yugudorashiru.de:80");
-        PreferenceHelper.putBoolean(getApplicationContext(), PREF_ON_BOOT, true);
+                PreferenceHelper.getMulticast(getApplicationContext()),
+                PreferenceHelper.getSelectedPublicPeers(getApplicationContext()));
 
         try {
             Thread.sleep(1000);

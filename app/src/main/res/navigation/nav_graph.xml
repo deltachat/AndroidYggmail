@@ -25,8 +25,11 @@
         tools:layout="@layout/fragment_settings">
 
         <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
+            android:id="@+id/action_SettingsFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
+        <action
+            android:id="@+id/action_SettingsFragment_to_PeerSelectionFragment"
+            app:destination="@id/PeerSelectionFragment" />
     </fragment>
 
     <fragment
@@ -34,4 +37,12 @@
         android:name="org.cyberta.LogFragment"
         android:label="@string/logs"
         tools:layout="@layout/fragment_log_list" />
+
+    <fragment
+        android:id="@+id/PeerSelectionFragment"
+        android:name="org.cyberta.PeerSelectionFragment"
+        android:label="@string/select_peers"
+        tools:layout="@layout/fragment_peer_selection">
+
+    </fragment>
 </navigation>

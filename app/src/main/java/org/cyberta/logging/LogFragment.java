@@ -22,8 +22,10 @@ import android.widget.Toast;
 
 import org.cyberta.R;
 import org.cyberta.Util;
+import org.cyberta.settings.PreferenceHelper;
 
 import java.io.File;
+import java.util.prefs.PreferenceChangeEvent;
 
 import static org.cyberta.logging.FileLogger.DEBUG_LOG;
 
@@ -33,6 +35,10 @@ import static org.cyberta.logging.FileLogger.DEBUG_LOG;
 public class LogFragment extends Fragment {
 
     private static final String TAG = LogFragment.class.getName();
+
+    private LogRecyclerViewAdapter recyclerViewAdapter;
+    private boolean showTimestamps;
+    private boolean showLogTags;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -60,10 +66,13 @@ public class LogFragment extends Fragment {
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
+            showTimestamps = PreferenceHelper.getShowTimestamps(context);
+            showLogTags = PreferenceHelper.getShowLogTags(context);
             RecyclerView recyclerView = (RecyclerView) view;
             LinearLayoutManager layoutManager = new LinearLayoutManager(context);
             recyclerView.setLayoutManager(layoutManager);
-            recyclerView.setAdapter(new LogRecyclerViewAdapter());
+            recyclerViewAdapter = new LogRecyclerViewAdapter(context);
+            recyclerView.setAdapter(recyclerViewAdapter);
             DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(), layoutManager.getOrientation());
             recyclerView.addItemDecoration(dividerItemDecoration);
         }
@@ -77,6 +86,10 @@ public class LogFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_logs, menu);
+        menu.findItem(R.id.action_show_timestamps).setTitle(showTimestamps ?
+                R.string.hide_timestamps : R.string.show_timestamps);
+        menu.findItem(R.id.action_show_log_tags).setTitle(showLogTags ?
+                R.string.hide_log_tags : R.string.show_log_tags);
     }
 
 
@@ -95,7 +108,7 @@ public class LogFragment extends Fragment {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_copy) {
-            String logs = LogObservable.getInstance().getLogsAsString();
+            String logs = LogObservable.getInstance().getLogsAsString(showTimestamps, showLogTags);
             Util.writeTextToClipboard(context, logs);
             Toast.makeText(context.getApplicationContext(), getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show();
             return true;
@@ -111,6 +124,16 @@ public class LogFragment extends Fragment {
                 shareIntent.putExtra(Intent.EXTRA_STREAM, contentUri);
                 startActivity(Intent.createChooser(shareIntent, getString(R.string.choose_app_to_share)));
             }
+        } else if (id == R.id.action_show_timestamps) {
+            showTimestamps = !showTimestamps;
+            recyclerViewAdapter.setShowTimeStamps(showTimestamps);
+            PreferenceHelper.setShowTimestamps(getContext(), showTimestamps);
+            item.setTitle(showTimestamps ? R.string.hide_timestamps : R.string.show_timestamps);
+        } else if (id == R.id.action_show_log_tags) {
+            showLogTags = !showLogTags;
+            recyclerViewAdapter.setShowLogTags(showLogTags);
+            PreferenceHelper.setShowLogTags(getContext(), showLogTags);
+            item.setTitle(showLogTags ? R.string.hide_log_tags : R.string.show_log_tags);
         }
         return super.onOptionsItemSelected(item);
     }

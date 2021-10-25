@@ -16,7 +16,24 @@ public class PreferenceHelper {
     public static String PREF_CONNECT_TO_PUBLIC_PEERS = "PREF_CONNECT_TO_PUBLIC_PEERS";
     public static String PREF_PUBLIC_PEERS = "PREF_PUBLIC_PEERS";
     public static String PREF_SELECTED_PEERS = "PREF_SELECTED_PEERS";
+    public static String PREF_SHOW_TIMESTAMPS = "PREF_SHOW_TIMESTAMPS";
+    public static String PREF_SHOW_LOG_TAGS = "PREF_SHOW_LOG_TAGS";
 
+    public static boolean getShowLogTags(Context context) {
+        return getBoolean(context, PREF_SHOW_LOG_TAGS, true);
+    }
+
+    public static void setShowLogTags(Context context, boolean showLogTags) {
+        putBoolean(context, PREF_SHOW_LOG_TAGS, showLogTags);
+    }
+
+    public static boolean getShowTimestamps(Context context) {
+        return getBoolean(context, PREF_SHOW_TIMESTAMPS, false);
+    }
+
+    public static void setShowTimestamps(Context context, boolean showTimestamps) {
+        putBoolean(context, PREF_SHOW_TIMESTAMPS, showTimestamps);
+    }
 
     public static boolean getConnectToPublicPeers(Context context) {
         return PreferenceHelper.getBoolean(context, PREF_CONNECT_TO_PUBLIC_PEERS, true);

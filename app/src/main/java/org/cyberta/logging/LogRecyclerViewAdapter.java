@@ -1,5 +1,6 @@
 package org.cyberta.logging;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -9,22 +10,42 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.cyberta.databinding.LogItemBinding;
-import org.cyberta.logging.LogListContent.LogListItem;
+import org.cyberta.settings.PreferenceHelper;
 
 import java.util.Observable;
 import java.util.Observer;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link LogListItem}.
+ * {@link RecyclerView.Adapter} that can display a {@link LogItem}.
  */
 public class LogRecyclerViewAdapter extends RecyclerView.Adapter<LogRecyclerViewAdapter.ViewHolder> implements Observer {
 
     private static final String TAG = LogRecyclerViewAdapter.class.getName();
     private LogObservable logObservable;
+    private boolean showTimestamps;
+    private boolean showLogTags;
 
-    public LogRecyclerViewAdapter() {
+    public LogRecyclerViewAdapter(Context context) {
         logObservable = LogObservable.getInstance();
         logObservable.addObserver(this);
+        showTimestamps = PreferenceHelper.getShowTimestamps(context);
+        showLogTags = PreferenceHelper.getShowLogTags(context);
+    }
+
+    public void setShowTimeStamps(boolean show) {
+        if (show == this.showTimestamps) {
+            return;
+        }
+        this.showTimestamps = show;
+        notifyDataSetChanged();
+    }
+
+    public void setShowLogTags(boolean show) {
+        if (show == this.showLogTags) {
+            return;
+        }
+        this.showLogTags = show;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -36,7 +57,7 @@ public class LogRecyclerViewAdapter extends RecyclerView.Adapter<LogRecyclerView
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = logObservable.getLogs().get(position);
-        holder.mContentView.setText(holder.mItem.content);
+        holder.mContentView.setText(holder.mItem.toString(showTimestamps, showLogTags));
     }
 
 
@@ -62,7 +83,7 @@ public class LogRecyclerViewAdapter extends RecyclerView.Adapter<LogRecyclerView
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final TextView mContentView;
-        public LogListItem mItem;
+        public LogItem mItem;
 
         public ViewHolder(LogItemBinding binding) {
             super(binding.getRoot());

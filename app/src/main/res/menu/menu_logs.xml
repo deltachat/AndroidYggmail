@@ -14,4 +14,12 @@
         android:title="@string/logs"
         android:icon="@drawable/ic_share_variant"
         app:showAsAction="always" />
+    <item android:id="@+id/action_show_timestamps"
+        android:orderInCategory="99"
+        android:title="@string/show_timestamps"
+        app:showAsAction="never" />
+    <item android:id="@+id/action_show_log_tags"
+        android:orderInCategory="98"
+        android:title="@string/show_log_tags"
+        app:showAsAction="never" />
 </menu>

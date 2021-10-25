@@ -1,4 +1,4 @@
-package org.cyberta;
+package org.cyberta.settings;
 
 import android.content.Context;
 import android.content.SharedPreferences;

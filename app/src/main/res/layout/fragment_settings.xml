@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingHorizontal="@dimen/text_margin"
-    tools:context=".SettingsFragment">
+    tools:context=".settings.SettingsFragment">
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/switch_enable_onboot"

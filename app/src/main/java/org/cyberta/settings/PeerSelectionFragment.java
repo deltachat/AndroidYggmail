@@ -1,4 +1,4 @@
-package org.cyberta;
+package org.cyberta.settings;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.cyberta.MainActivity;
+import org.cyberta.R;
 import org.cyberta.databinding.FragmentPeerSelectionBinding;
 
 

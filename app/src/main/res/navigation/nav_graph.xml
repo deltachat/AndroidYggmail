@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/SettingsFragment"
-        android:name="org.cyberta.SettingsFragment"
+        android:name="org.cyberta.settings.SettingsFragment"
         android:label="@string/action_settings"
         tools:layout="@layout/fragment_settings">
 
@@ -40,7 +40,7 @@
 
     <fragment
         android:id="@+id/PeerSelectionFragment"
-        android:name="org.cyberta.PeerSelectionFragment"
+        android:name="org.cyberta.settings.PeerSelectionFragment"
         android:label="@string/select_peers"
         tools:layout="@layout/fragment_peer_selection">
 

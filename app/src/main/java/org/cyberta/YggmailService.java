@@ -9,6 +9,8 @@ import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.cyberta.settings.PreferenceHelper;
+
 import yggmail.Logger;
 import yggmail.Yggmail_;
 

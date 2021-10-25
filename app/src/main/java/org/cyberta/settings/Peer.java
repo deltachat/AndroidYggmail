@@ -1,4 +1,4 @@
-package org.cyberta;
+package org.cyberta.settings;
 
 import org.json.JSONException;
 import org.json.JSONObject;

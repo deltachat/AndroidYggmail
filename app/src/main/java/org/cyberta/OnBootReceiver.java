@@ -3,11 +3,11 @@ package org.cyberta;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 
+import org.cyberta.settings.PreferenceHelper;
+
 import static android.content.Intent.ACTION_BOOT_COMPLETED;
-import static org.cyberta.PreferenceHelper.PREF_ON_BOOT;
 
 
 public class OnBootReceiver extends BroadcastReceiver {

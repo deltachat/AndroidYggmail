@@ -1,4 +1,4 @@
-package org.cyberta;
+package org.cyberta.settings;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,14 +9,15 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
+import org.cyberta.R;
 import org.cyberta.databinding.FragmentSettingsBinding;
 
-import static org.cyberta.PreferenceHelper.getConnectToPublicPeers;
-import static org.cyberta.PreferenceHelper.getMulticast;
-import static org.cyberta.PreferenceHelper.getStartOnBoot;
-import static org.cyberta.PreferenceHelper.setConnectToPublicPeers;
-import static org.cyberta.PreferenceHelper.setMulticast;
-import static org.cyberta.PreferenceHelper.setStartOnBoot;
+import static org.cyberta.settings.PreferenceHelper.getConnectToPublicPeers;
+import static org.cyberta.settings.PreferenceHelper.getMulticast;
+import static org.cyberta.settings.PreferenceHelper.getStartOnBoot;
+import static org.cyberta.settings.PreferenceHelper.setConnectToPublicPeers;
+import static org.cyberta.settings.PreferenceHelper.setMulticast;
+import static org.cyberta.settings.PreferenceHelper.setStartOnBoot;
 
 public class SettingsFragment extends Fragment {
 

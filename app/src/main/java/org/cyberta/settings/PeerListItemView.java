@@ -1,4 +1,4 @@
-package org.cyberta;
+package org.cyberta.settings;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.LinearLayoutCompat;
 
+import org.cyberta.R;
 import org.cyberta.databinding.PeerItemBinding;
 
 public class PeerListItemView extends LinearLayoutCompat {

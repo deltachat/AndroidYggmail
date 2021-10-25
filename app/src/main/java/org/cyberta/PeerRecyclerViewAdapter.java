@@ -6,11 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.cyberta.databinding.PeerItemBinding;
@@ -42,19 +45,31 @@ public class PeerRecyclerViewAdapter extends RecyclerView.Adapter<PeerRecyclerVi
 
     @Override
     public void onBindViewHolder(@NonNull PeerRecyclerViewAdapter.ViewHolder holder, int position) {
-        Peer peer = peerManager.peerList.get(position);
+        Peer peer = peerManager.getDisplayList().get(position);
         holder.mItem = peer;
         holder.checkBox.setImageResource(peer.isSelected ?
                 R.drawable.ic_check_circle_outline :
                 R.drawable.ic_checkbox_blank_circle_outline);
         holder.addressView.setText(peer.address);
-        holder.header.setVisibility(peer.showSectionHeader ? VISIBLE : GONE);
-        holder.header.setText(peer.countryKey.replace(".md", ""));
+        if (peer.showSectionHeader) {
+            holder.header.setText(peer.countryKey.replace(".md", ""));
+            int selectedCount = peerManager.getSelectedPeerCount(peer.countryKey);
+            if (selectedCount > 0) {
+                holder.headerCircleCount.setText(String.valueOf(selectedCount));
+                holder.counterContainer.setVisibility(VISIBLE);
+            } else {
+                holder.counterContainer.setVisibility(GONE);
+            }
+        }
+        holder.headerContainer.setVisibility(peer.showSectionHeader ? VISIBLE : GONE);
+        holder.peerItemContainer.setVisibility(peer.showItem ? VISIBLE : GONE);
+        holder.headerArrow.setImageResource(peer.showItem ? R.drawable.ic_chevron_up : R.drawable.ic_chevron_down);
+
     }
 
     @Override
     public int getItemCount() {
-        return peerManager.peerList.size();
+        return peerManager.getDisplayList().size();
     }
 
     @Override
@@ -64,12 +79,17 @@ public class PeerRecyclerViewAdapter extends RecyclerView.Adapter<PeerRecyclerVi
         }
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         private final String TAG = ViewHolder.class.getSimpleName();
-        public final TextView addressView;
+        public final AppCompatTextView addressView;
         public final ImageView checkBox;
-        public final TextView header;
+        public final AppCompatTextView header;
+        public final LinearLayoutCompat headerContainer;
+        public final LinearLayoutCompat peerItemContainer;
+        public final ImageView headerArrow;
+        public final RelativeLayout counterContainer;
+        public final AppCompatTextView headerCircleCount;
 
         public Peer mItem;
 
@@ -78,7 +98,13 @@ public class PeerRecyclerViewAdapter extends RecyclerView.Adapter<PeerRecyclerVi
             addressView = binding.addressView;
             checkBox = binding.itemCheckbox;
             header = binding.header;
-            binding.peerItemContainer.setOnClickListener(this);
+            headerContainer = binding.headerContainer;
+            headerArrow = binding.headerArrow;
+            peerItemContainer = binding.peerItemContainer;
+            counterContainer = binding.counterContainer;
+            headerCircleCount = binding.headerCircleCount;
+            binding.peerItemContainer.setOnClickListener(this::onClickItemContainer);
+            binding.headerContainer.setOnClickListener(this::onClickHeaderContainer);
         }
 
         @Override
@@ -86,8 +112,8 @@ public class PeerRecyclerViewAdapter extends RecyclerView.Adapter<PeerRecyclerVi
             return super.toString() + " '" + addressView.getText() + "'";
         }
 
-        @Override
-        public void onClick(View v) {
+
+        public void onClickItemContainer(View v) {
             Log.d(TAG, "onClick " + getLayoutPosition() + " " + mItem.address);
             peerManager.toggleSelected(mItem);
             try {
@@ -101,6 +127,11 @@ public class PeerRecyclerViewAdapter extends RecyclerView.Adapter<PeerRecyclerVi
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+
+        public void onClickHeaderContainer(View v) {
+            Log.d(TAG, "onClick " + getLayoutPosition() + " " + mItem.address);
+            peerManager.toggleHeader(mItem);
         }
 
     }

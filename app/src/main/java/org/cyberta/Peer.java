@@ -23,6 +23,7 @@ public class Peer {
     public Date lastSeen;
     public int protoMinor;
     public boolean isSelected;
+    public boolean showItem;
     public boolean showSectionHeader;
     public String countryKey;
 

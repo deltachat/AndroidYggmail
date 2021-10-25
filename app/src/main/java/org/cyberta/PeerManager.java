@@ -10,12 +10,11 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Objects;
 import java.util.Observable;
-import java.util.Set;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -23,12 +22,11 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-import static org.cyberta.PreferenceHelper.PREF_PUBLIC_PEERS;
-import static org.cyberta.PreferenceHelper.PREF_SELECTED_PEERS;
-
 public class PeerManager extends Observable {
     HashSet<String> selectedPeers = new HashSet<>();
-    ArrayList<Peer> peerList = new ArrayList<>();
+    private HashMap<String, Peer> addressPeerMap = new HashMap<>();
+    private HashMap<String, ArrayList<Peer>> peerMap = new HashMap<>();
+    private ArrayList<Peer> displayList = new ArrayList<>();
     public static final String PEER_URL = "https://publicpeers.neilalexander.dev/publicnodes.json";
     private WeakReference<Context> contextRef;
 
@@ -37,8 +35,7 @@ public class PeerManager extends Observable {
         String peersJson = PreferenceHelper.getPublicPeers(context);
         try {
             selectedPeers = PreferenceHelper.getSelectedPeers(context);
-            peerList = fromJson(peersJson);
-
+            parsePeerList(peersJson);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -60,8 +57,9 @@ public class PeerManager extends Observable {
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 try {
                     String responseJson = response.body().string();
-                    peerList = fromJson(responseJson);
+                    parsePeerList(responseJson);
                     PreferenceHelper.setPublicPeers(context, responseJson);
+                    updateDisplayList();
                     PeerManager.this.setChanged();
                     PeerManager.this.notifyObservers();
                 } catch (NullPointerException | JSONException e) {
@@ -83,8 +81,30 @@ public class PeerManager extends Observable {
         PeerManager.this.notifyObservers();
     }
 
-    public ArrayList<Peer> fromJson(String json) throws JSONException {
-        ArrayList<Peer> peerList = new ArrayList<>();
+    public int getSelectedPeerCount(String countryKey) {
+        int counter = 0;
+        for (String address : selectedPeers) {
+            Peer peer = addressPeerMap.get(address);
+            if (peer.countryKey.equals(countryKey)) {
+                counter++;
+            }
+        }
+        return counter;
+    }
+
+    public void toggleHeader(Peer peer) {
+        ArrayList<Peer> peers = peerMap.get(peer.countryKey);
+        for (Peer p : peers) {
+            p.showItem = !p.showItem;
+        }
+
+        updateDisplayList();
+        PeerManager.this.setChanged();
+        PeerManager.this.notifyObservers();
+    }
+
+    public HashMap<String, ArrayList<Peer>> fromJson(String json) throws JSONException {
+        HashMap<String, ArrayList<Peer>> peerMap = new HashMap<>();
 
         JSONObject jsonObject = new JSONObject(json);
         Iterator<String> countryKeys = jsonObject.keys();
@@ -94,6 +114,9 @@ public class PeerManager extends Observable {
             showSectionHeader = true;
             JSONObject countryObject = jsonObject.getJSONObject(countryKey);
             Iterator<String> addressKeys = countryObject.keys();
+            ArrayList<Peer> countryList = new ArrayList<>();
+            peerMap.put(countryKey,countryList);
+
             while (addressKeys.hasNext()) {
                 String addressKey = addressKeys.next();
                 JSONObject peerObject = countryObject.getJSONObject(addressKey);
@@ -108,24 +131,53 @@ public class PeerManager extends Observable {
                 if (selectedPeers.contains(peer.address)) {
                     peer.isSelected = true;
                 }
-                peerList.add(peer);
+                countryList.add(peer);
+                addressPeerMap.put(peer.address, peer);
             }
         }
         removeDeprecatedSelectedPeers();
-        return peerList;
+        return peerMap;
+    }
+
+    public ArrayList<Peer> getDisplayList() {
+        return displayList;
+    }
+
+    private void updateDisplayList() {
+        ArrayList<Peer> displayList = new ArrayList<>();
+        for (String countryKey : peerMap.keySet()) {
+            ArrayList<Peer> countryList = peerMap.get(countryKey);
+            if (countryList == null || countryList.size() == 0) {
+                continue;
+            }
+            Peer firstCountryListItem = countryList.get(0);
+            if (firstCountryListItem.showItem) {
+                displayList.addAll(countryList);
+            } else {
+                displayList.add(firstCountryListItem);
+            }
+        }
+        this.displayList = displayList;
+    }
+
+    public void saveSelection() {
+        PreferenceHelper.setSelectedPeers(contextRef.get(), selectedPeers);
     }
 
     private void removeDeprecatedSelectedPeers() {
         HashSet<String> tmp = new HashSet<>(selectedPeers);
-        for (Peer peer : peerList) {
-            if (selectedPeers.contains(peer.address)) {
-                tmp.add(peer.address);
+        Collection<ArrayList<Peer>> countryLists = peerMap.values();
+        for (ArrayList<Peer> countryList : countryLists) {
+            for (Peer peer : countryList) {
+                if (selectedPeers.contains(peer.address)) {
+                    tmp.add(peer.address);
+                }
             }
         }
         selectedPeers = tmp;
     }
 
-    public void saveSelection() {
-        PreferenceHelper.setSelectedPeers(contextRef.get(), selectedPeers);
+    private void parsePeerList(String peersJson) throws JSONException {
+        peerMap =  fromJson(peersJson);
     }
 }

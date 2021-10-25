@@ -1,4 +1,4 @@
-package org.cyberta;
+package org.cyberta.logging;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,8 +8,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.cyberta.databinding.FragmentLogBinding;
-import org.cyberta.placeholder.LogListContent.LogListItem;
+import org.cyberta.databinding.LogItemBinding;
+import org.cyberta.logging.LogListContent.LogListItem;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -30,7 +30,7 @@ public class LogRecyclerViewAdapter extends RecyclerView.Adapter<LogRecyclerView
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(FragmentLogBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
+        return new ViewHolder(LogItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
     }
 
     @Override
@@ -64,7 +64,7 @@ public class LogRecyclerViewAdapter extends RecyclerView.Adapter<LogRecyclerView
         public final TextView mContentView;
         public LogListItem mItem;
 
-        public ViewHolder(FragmentLogBinding binding) {
+        public ViewHolder(LogItemBinding binding) {
             super(binding.getRoot());
             mContentView = binding.content;
         }

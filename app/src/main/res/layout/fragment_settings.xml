@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="@dimen/text_margin"
+    tools:context=".settings.SettingsFragment">
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switch_enable_onboot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/start_on_boot"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/text_margin"
+        />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switch_local_network"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/local_network"
+        app:layout_constraintTop_toBottomOf="@id/switch_enable_onboot"
+        android:layout_marginTop="@dimen/text_margin"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/description_local_network"
+        app:layout_constraintTop_toBottomOf="@id/switch_local_network"
+        android:textAppearance="@android:style/TextAppearance.Small"
+        android:text="@string/description_local_network"
+        android:layout_marginEnd="60dp"
+        android:layout_marginRight="60dp"
+        android:layout_marginTop="-10dp"
+        />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/switch_public_peers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/public_peers"
+        app:layout_constraintTop_toBottomOf="@id/description_local_network"
+        android:layout_marginTop="@dimen/text_margin"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/description_public_peers"
+        app:layout_constraintTop_toBottomOf="@id/switch_public_peers"
+        android:textAppearance="@android:style/TextAppearance.Small"
+        android:text="@string/description_public_peers"
+        android:layout_marginEnd="60dp"
+        android:layout_marginRight="60dp"
+        android:layout_marginTop="-10dp"
+        />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/select_peers"
+        android:paddingTop="@dimen/text_margin"
+        android:paddingBottom="@dimen/text_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/description_public_peers"
+        android:text="@string/select_n_peers"
+        android:enabled="true"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

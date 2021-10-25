@@ -1,9 +1,4 @@
-package org.cyberta.placeholder;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+package org.cyberta.logging;
 
 /**
  * Helper class for providing sample content for user interfaces created by

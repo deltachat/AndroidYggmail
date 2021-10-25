@@ -3,11 +3,11 @@ package org.cyberta;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Build;
 
+import org.cyberta.settings.PreferenceHelper;
+
 import static android.content.Intent.ACTION_BOOT_COMPLETED;
-import static org.cyberta.PreferenceHelper.PREF_ON_BOOT;
 
 
 public class OnBootReceiver extends BroadcastReceiver {
@@ -20,7 +20,7 @@ public class OnBootReceiver extends BroadcastReceiver {
             return;
         }
 
-        boolean startOnBoot = PreferenceHelper.getBoolean(context, PREF_ON_BOOT, false);
+        boolean startOnBoot = PreferenceHelper.getStartOnBoot(context);
         if (startOnBoot) {
             Intent yggmailIntent = new Intent(context.getApplicationContext(), YggmailService.class);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

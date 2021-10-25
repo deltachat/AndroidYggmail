@@ -3,7 +3,6 @@
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">Yggmail Android Experiment</string>
-    <string name="second_fragment_label">Second Fragment</string>
     <string name="start">Start</string>
     <string name="stop">Stop</string>
     <string name="previous">Previous</string>
@@ -20,5 +19,14 @@
     <string name="current_session">Current session</string>
     <string name="copied_to_clipboard">Copied to clipboard.</string>
     <string name="choose_app_to_share">Choose an app to share the logs</string>
+    <string name="local_network">Find peers in local network</string>
+    <string name="public_peers">Connect to public peers</string>
+    <string name="description_local_network">Enable this option to communicate with other users within the same wifi or local network.</string>
+    <string name="description_public_peers">Enable this option if you want to communicate with users outside of your local network</string>
+    <string name="add_public_peer">Add public peer</string>
+    <string name="add">add</string>
+    <string name="start_on_boot">Start on boot</string>
+    <string name="select_n_peers">Select peers (%d)</string>
+    <string name="select_peers">Select peers</string>
 
 </resources>

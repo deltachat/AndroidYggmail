@@ -1,8 +1,8 @@
-package org.cyberta;
+package org.cyberta.logging;
 
 import android.util.Log;
 
-import org.cyberta.placeholder.LogListContent;
+import org.cyberta.Util;
 
 import java.util.ArrayList;
 import java.util.Observable;

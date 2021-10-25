@@ -34,7 +34,7 @@
 
     <fragment
         android:id="@+id/LogFragment"
-        android:name="org.cyberta.LogFragment"
+        android:name="org.cyberta.logging.LogFragment"
         android:label="@string/logs"
         tools:layout="@layout/fragment_log_list" />
 

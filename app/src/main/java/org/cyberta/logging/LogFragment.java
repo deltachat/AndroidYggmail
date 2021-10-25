@@ -1,22 +1,17 @@
-package org.cyberta;
+package org.cyberta.logging;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,11 +20,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import org.cyberta.placeholder.LogListContent;
+import org.cyberta.R;
+import org.cyberta.Util;
 
 import java.io.File;
 
-import static org.cyberta.FileLogger.DEBUG_LOG;
+import static org.cyberta.logging.FileLogger.DEBUG_LOG;
 
 /**
  * A fragment representing a list of log entries.

@@ -1,4 +1,4 @@
-package org.cyberta;
+package org.cyberta.logging;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.cyberta.databinding.LogItemBinding;
-import org.cyberta.placeholder.LogListContent.LogListItem;
+import org.cyberta.logging.LogListContent.LogListItem;
 
 import java.util.Observable;
 import java.util.Observer;

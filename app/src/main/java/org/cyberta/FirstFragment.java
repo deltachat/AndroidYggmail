@@ -1,33 +1,22 @@
 package org.cyberta;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.FileProvider;
-import androidx.core.os.BuildCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import org.cyberta.databinding.FragmentFirstBinding;
 
-import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
-
-import static org.cyberta.FileLogger.DEBUG_LOG;
-import static org.cyberta.YggmailService.ACTION_STOP;
 
 public class FirstFragment extends Fragment implements Observer {
 

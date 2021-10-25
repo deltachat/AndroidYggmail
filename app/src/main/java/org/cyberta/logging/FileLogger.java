@@ -1,4 +1,4 @@
-package org.cyberta;
+package org.cyberta.logging;
 
 import android.content.Context;
 import android.os.Handler;

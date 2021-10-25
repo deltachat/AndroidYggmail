@@ -55,6 +55,7 @@ public class SettingsFragment extends Fragment {
             NavHostFragment.findNavController(SettingsFragment.this)
                     .navigate(R.id.action_SettingsFragment_to_PeerSelectionFragment);
         });
+        binding.selectPeers.setEnabled(getConnectToPublicPeers(getContext()));
     }
 
     @Override

@@ -16,14 +16,31 @@ public class PreferenceHelper {
     public static String PREF_CONNECT_TO_PUBLIC_PEERS = "PREF_CONNECT_TO_PUBLIC_PEERS";
     public static String PREF_PUBLIC_PEERS = "PREF_PUBLIC_PEERS";
     public static String PREF_SELECTED_PEERS = "PREF_SELECTED_PEERS";
+    public static String PREF_SHOW_TIMESTAMPS = "PREF_SHOW_TIMESTAMPS";
+    public static String PREF_SHOW_LOG_TAGS = "PREF_SHOW_LOG_TAGS";
 
+    public static boolean getShowLogTags(Context context) {
+        return getBoolean(context, PREF_SHOW_LOG_TAGS, true);
+    }
+
+    public static void setShowLogTags(Context context, boolean showLogTags) {
+        putBoolean(context, PREF_SHOW_LOG_TAGS, showLogTags);
+    }
+
+    public static boolean getShowTimestamps(Context context) {
+        return getBoolean(context, PREF_SHOW_TIMESTAMPS, true);
+    }
+
+    public static void setShowTimestamps(Context context, boolean showTimestamps) {
+        putBoolean(context, PREF_SHOW_TIMESTAMPS, showTimestamps);
+    }
 
     public static boolean getConnectToPublicPeers(Context context) {
-        return PreferenceHelper.getBoolean(context, PREF_CONNECT_TO_PUBLIC_PEERS, true);
+        return getBoolean(context, PREF_CONNECT_TO_PUBLIC_PEERS, true);
     }
 
     public static void setConnectToPublicPeers(Context context, boolean connectToPublicPeers) {
-        PreferenceHelper.putBoolean(context, PREF_CONNECT_TO_PUBLIC_PEERS, connectToPublicPeers);
+        putBoolean(context, PREF_CONNECT_TO_PUBLIC_PEERS, connectToPublicPeers);
     }
 
     public static String getSelectedPublicPeers(Context context) {
@@ -45,7 +62,7 @@ public class PreferenceHelper {
     }
 
     public static HashSet<String> getSelectedPeers(Context context) {
-        if (!PreferenceHelper.hasPreferenceKey(context, PREF_SELECTED_PEERS)) {
+        if (!hasPreferenceKey(context, PREF_SELECTED_PEERS)) {
             HashSet<String> defaultValues = new HashSet<>();
             // german node
             defaultValues.add("tcp://bunkertreff.ddns.net:5454");
@@ -61,33 +78,32 @@ public class PreferenceHelper {
     }
 
     public static void setSelectedPeers(Context context, HashSet<String> peers) {
-        PreferenceHelper.putStringSet(context, PREF_SELECTED_PEERS, peers);
+        putStringSet(context, PREF_SELECTED_PEERS, peers);
     }
 
     public static String getPublicPeers(Context context) {
-        return PreferenceHelper.getString(context, PREF_PUBLIC_PEERS, "");
+        return getString(context, PREF_PUBLIC_PEERS, "");
     }
 
     public static void setPublicPeers(Context context, String peersJson) {
-        PreferenceHelper.putString(context, PREF_PUBLIC_PEERS, peersJson);
+        putString(context, PREF_PUBLIC_PEERS, peersJson);
     }
 
     public static boolean getStartOnBoot(Context context) {
-        return PreferenceHelper.getBoolean(context, PREF_ON_BOOT, true);
+        return getBoolean(context, PREF_ON_BOOT, true);
     }
 
     public static void setStartOnBoot(Context context, boolean startOnBoot) {
-        PreferenceHelper.putBoolean(context, PREF_ON_BOOT, startOnBoot);
+        putBoolean(context, PREF_ON_BOOT, startOnBoot);
     }
 
 
     public static void setMulticast(Context context, boolean peersInLocalNetwork) {
-        PreferenceHelper.putBoolean(context, PREF_MULTICAST, peersInLocalNetwork);
-
+        putBoolean(context, PREF_MULTICAST, peersInLocalNetwork);
     }
 
     public static boolean getMulticast(Context context) {
-        return PreferenceHelper.getBoolean(context, PREF_MULTICAST, true);
+        return getBoolean(context, PREF_MULTICAST, true);
     }
 
     private static boolean hasPreferenceKey(Context context, String key) {

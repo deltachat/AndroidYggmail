@@ -6,11 +6,14 @@ import org.cyberta.Util;
 
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LogObservable extends Observable {
 
+    private static final Pattern LOG_PATTERN = Pattern.compile("(\\d{4}\\/\\d{1,2}\\/\\d{1,2} \\d{1,2}:\\d{1,2}:\\d{1,2}) (\\[[\\s\\w]*\\]) (.*)");
     private static final String TAG = LogObservable.class.getName();
-    ArrayList<LogListContent.LogListItem> logs;
+    ArrayList<LogItem> logs;
 
     private LogObservable() {
         logs = new ArrayList<>();
@@ -25,21 +28,34 @@ public class LogObservable extends Observable {
     }
 
     public void addLog(String message) {
+
+        Matcher m = LOG_PATTERN.matcher(message.trim());
+        final LogItem item;
+        if (m.matches()) {
+            item = new LogItem(m.group(1), m.group(2), m.group(3));
+        } else {
+            item = new LogItem("", "", message.trim());
+        }
         Util.runOnMain(() -> {
-            logs.add(new LogListContent.LogListItem(message.trim()));
-            Log.d(TAG, "add Log: " + message.trim());
+            logs.add(item);
             setChanged();
             notifyObservers();
         });
     }
 
-    public ArrayList<LogListContent.LogListItem> getLogs() {
+    public ArrayList<LogItem> getLogs() {
         return logs;
     }
 
-    public String getLogsAsString() {
+    public String getLogsAsString(boolean addTimestamp, boolean addTag) {
         StringBuilder sb = new StringBuilder();
-        for (LogListContent.LogListItem logItem : logs) {
+        for (LogItem logItem : logs) {
+            if (addTimestamp) {
+                sb.append(logItem.timestamp).append(" ");
+            }
+            if (addTag) {
+                sb.append(logItem.tag).append(" ");
+            }
             sb.append(logItem.content).append("\n");
         }
         return sb.toString();

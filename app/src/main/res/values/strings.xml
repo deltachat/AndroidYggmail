@@ -28,5 +28,9 @@
     <string name="start_on_boot">Start on boot</string>
     <string name="select_n_peers">Select peers (%d)</string>
     <string name="select_peers">Select peers</string>
+    <string name="show_timestamps">Show timestamps</string>
+    <string name="hide_timestamps">Hide timestamps</string>
+    <string name="show_log_tags">Show tags</string>
+    <string name="hide_log_tags">Hide tags</string>
 
 </resources>

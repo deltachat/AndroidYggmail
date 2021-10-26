@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 public class LogObservable extends Observable {
 
-    private static final Pattern LOG_PATTERN = Pattern.compile("(\\d{4}\\/\\d{1,2}\\/\\d{1,2} \\d{1,2}:\\d{1,2}:\\d{1,2}) (\\[.*]) (.*)");
+    private static final Pattern LOG_PATTERN = Pattern.compile("(\\d{4}\\/\\d{1,2}\\/\\d{1,2} \\d{1,2}:\\d{1,2}:\\d{1,2}) (\\[[\\s\\w]*\\]) (.*)");
     private static final String TAG = LogObservable.class.getName();
     ArrayList<LogItem> logs;
 

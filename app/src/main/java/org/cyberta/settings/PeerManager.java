@@ -36,6 +36,7 @@ public class PeerManager extends Observable {
         try {
             selectedPeers = PreferenceHelper.getSelectedPeers(context);
             parsePeerList(peersJson);
+            updateDisplayList();
         } catch (JSONException e) {
             e.printStackTrace();
         }

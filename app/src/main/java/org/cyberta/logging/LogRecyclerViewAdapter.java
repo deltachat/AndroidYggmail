@@ -1,7 +1,6 @@
 package org.cyberta.logging;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -76,7 +75,6 @@ public class LogRecyclerViewAdapter extends RecyclerView.Adapter<LogRecyclerView
     public void update(Observable o, Object arg) {
         if (o instanceof LogObservable) {
             this.logObservable = (LogObservable) o;
-            Log.d(TAG, "logs updated ->  notify data set changed");
             notifyDataSetChanged();
         }
     }

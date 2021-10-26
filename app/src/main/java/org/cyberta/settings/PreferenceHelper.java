@@ -28,7 +28,7 @@ public class PreferenceHelper {
     }
 
     public static boolean getShowTimestamps(Context context) {
-        return getBoolean(context, PREF_SHOW_TIMESTAMPS, false);
+        return getBoolean(context, PREF_SHOW_TIMESTAMPS, true);
     }
 
     public static void setShowTimestamps(Context context, boolean showTimestamps) {

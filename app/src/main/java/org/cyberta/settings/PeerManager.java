@@ -125,9 +125,14 @@ public class PeerManager extends Observable {
                 if (!peer.up) {
                     continue;
                 }
+
                 if (showSectionHeader) {
                     peer.showSectionHeader = true;
                     showSectionHeader = false;
+                }
+                Peer previousPeerInstance = addressPeerMap.get(peer.address);
+                if (previousPeerInstance != null) {
+                    peer.showItem = previousPeerInstance.showItem;
                 }
                 if (selectedPeers.contains(peer.address)) {
                     peer.isSelected = true;

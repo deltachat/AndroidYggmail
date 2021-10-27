@@ -1,7 +1,7 @@
 # AndroidYggmail
 
 This is a port of [Yggmail](https://github.com/neilalexander/yggmail) with a basic user interface for Android.
-AndroidYggmail is an email companion app that allows you to send email within the p2p-network [yggdrasil](https://yggdrasil-network.github.io/).
+AndroidYggmail is an email companion app that allows you to send email within the p2p-network [Yggdrasil](https://yggdrasil-network.github.io/).
 You can use AndroidYggmail in conjunction with the email client of your choice, however we recommend using it with DeltaChat as we actively work on a seamless integration.
 Please read the [introduction](https://github.com/neilalexander/yggmail#introduction) to learn more about the reasoning behind Yggmail.
 
@@ -36,13 +36,13 @@ Command line users who __have set up the Android SDK correctly__ can simply type
 ## Contributing
 
 Contributions are very welcome. 
-If you find bugs, please create tickets and if you have patches for them we're even happier.
+If you find bugs, please create tickets on our issue tracker and if you have patches for them we're even happier.
 We haven't set up yet a project on transifex, but if you're interested in translations, please let us know.
 
 
 # Credits
 
-This app relies heavily on the great work of [Neil Alexander]https://github.com/neilalexander/ and the Yggdrasil community!
+This app relies heavily on the great work of [Neil Alexander](https://github.com/neilalexander/) and the Yggdrasil community!
 
 # License
 

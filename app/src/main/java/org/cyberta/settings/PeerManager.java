@@ -1,8 +1,11 @@
 package org.cyberta.settings;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,12 +26,17 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class PeerManager extends Observable {
+    public static final String PEER_URL = "https://publicpeers.neilalexander.dev/publicnodes.json";
+    public static final String EVENT_LOADING_PEERS_STARTED = "EVENT_LOADING_PEERS_STARTED";
+    public static final String EVENT_LOADING_PEERS_FINISHED = "EVENT_LOADING_PEERS_FINISHED";
+    public static final String EVENT_LOADING_PEERS_FAILED = "EVENT_LOADING_PEERS_FAILED";
+    private static final String TAG = PeerManager.class.getSimpleName();
+
     HashSet<String> selectedPeers = new HashSet<>();
     private HashMap<String, Peer> addressPeerMap = new HashMap<>();
     private HashMap<String, ArrayList<Peer>> peerMap = new HashMap<>();
     private ArrayList<Peer> displayList = new ArrayList<>();
-    public static final String PEER_URL = "https://publicpeers.neilalexander.dev/publicnodes.json";
-    private WeakReference<Context> contextRef;
+    private final WeakReference<Context> contextRef;
 
     public PeerManager(Context context) {
         contextRef = new WeakReference<>(context);
@@ -36,12 +44,15 @@ public class PeerManager extends Observable {
         try {
             selectedPeers = PreferenceHelper.getSelectedPeers(context);
             parsePeerList(peersJson);
+            updateDisplayList();
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
     public void fetchPeers(Context context) {
+        LocalBroadcastManager localBroadcastManager = LocalBroadcastManager.getInstance(context);
+        localBroadcastManager.sendBroadcast(getEvent(EVENT_LOADING_PEERS_STARTED));
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(PEER_URL)
@@ -51,6 +62,7 @@ public class PeerManager extends Observable {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 e.printStackTrace();
+                localBroadcastManager.sendBroadcast(getEvent(EVENT_LOADING_PEERS_FAILED));
             }
 
             @Override
@@ -60,6 +72,7 @@ public class PeerManager extends Observable {
                     parsePeerList(responseJson);
                     PreferenceHelper.setPublicPeers(context, responseJson);
                     updateDisplayList();
+                    localBroadcastManager.sendBroadcast(getEvent(EVENT_LOADING_PEERS_FINISHED));
                     PeerManager.this.setChanged();
                     PeerManager.this.notifyObservers();
                 } catch (NullPointerException | JSONException e) {
@@ -67,6 +80,12 @@ public class PeerManager extends Observable {
                 }
             }
         });
+    }
+
+    private Intent getEvent(String event) {
+        Intent intent = new Intent(event);
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+        return intent;
     }
 
     public void toggleSelected(Peer peer) {
@@ -124,9 +143,14 @@ public class PeerManager extends Observable {
                 if (!peer.up) {
                     continue;
                 }
+
                 if (showSectionHeader) {
                     peer.showSectionHeader = true;
                     showSectionHeader = false;
+                }
+                Peer previousPeerInstance = addressPeerMap.get(peer.address);
+                if (previousPeerInstance != null) {
+                    peer.showItem = previousPeerInstance.showItem;
                 }
                 if (selectedPeers.contains(peer.address)) {
                     peer.isSelected = true;

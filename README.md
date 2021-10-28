@@ -15,11 +15,12 @@ To checkout the repository you can do:
 
 ```
    git clone https://github.com/deltachat/AndroidYggmail.git
+   cd AndroidYggmail/
    git submodule update --init --recursive
 ```
 Next, change to the lib-yggmail directory:
 ```
-   cd AndroidYggmail/lib-yggmail
+   cd lib-yggmail
 ```
 You can now build the yggmail library. The script currently only supports Linux and Mac. 
 If you're using Windows and are able to adapt the build script accordingly, please send us a pull request :)

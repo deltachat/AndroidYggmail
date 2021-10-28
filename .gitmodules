@@ -1,3 +1,4 @@
 [submodule "yggmail"]
 	path = yggmail
 	url = https://github.com/deltachat/yggmail
+	branch = android_lib

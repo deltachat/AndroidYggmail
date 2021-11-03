@@ -30,6 +30,15 @@
             </intent-filter>
         </receiver>
 
+        <receiver
+            android:name=".DcBroadcastReceiver"
+            android:exported="true"
+            android:enabled="true">
+            <intent-filter android:priority="999">
+                <action android:name="chat.delta.DC_REQUEST_ACCOUNT_DATA" />
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"

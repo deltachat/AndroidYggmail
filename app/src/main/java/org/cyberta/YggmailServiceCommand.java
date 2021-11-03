@@ -4,9 +4,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
+import static org.cyberta.YggmailService.ACTION_SEND_ACCOUNT_DATA;
 import static org.cyberta.YggmailService.ACTION_STOP;
 
 public class YggmailServiceCommand {
+
+    public static void sendYggmailAccountData(Context context) {
+        if (context == null) {
+            return;
+        }
+        Intent intent = new Intent(context.getApplicationContext(), YggmailService.class);
+        intent.setAction(ACTION_SEND_ACCOUNT_DATA);
+        startServiceIntent(context, intent);
+    }
 
     public static void startYggmail(Context context) {
         if (context == null) {

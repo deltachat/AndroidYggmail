@@ -22,11 +22,13 @@ import org.cyberta.settings.PreferenceHelper;
 import java.io.Closeable;
 
 import yggmail.Logger;
+import yggmail.Yggmail;
 import yggmail.Yggmail_;
 
 public class YggmailService extends Service {
 
     public static final String ACTION_STOP = "ACTION_STOP";
+    public static final String ACTION_SEND_ACCOUNT_DATA = "ACTION_SEND_ACCOUNT_DATA";
     private static final String TAG = YggmailService.class.getSimpleName();
 
     private YggmailNotificationManager notificationManager ;
@@ -77,7 +79,6 @@ public class YggmailService extends Service {
             @Override
             public void logMessage(String s) {
                 Log.d(TAG, s);
-                //TODO: show in UI
                 if (s != null) {
                     fileLogger.send(s);
                 }
@@ -106,27 +107,28 @@ public class YggmailService extends Service {
             return START_NOT_STICKY;
         }
 
-        Log.d(TAG, "onStartCommand start yggmail");
+        if (Yggmail.Stopped == yggmail.getState()) {
 
-        YggmailOberservable.getInstance().setStatus(YggmailOberservable.Status.Running);
-        Log.d(TAG, getApplicationContext().getFilesDir().getPath()+"/yggmail.db");
-        yggmail.setDatabaseName(getApplicationContext().getFilesDir().getPath()+"/yggmail.db");
+            YggmailOberservable.getInstance().setStatus(YggmailOberservable.Status.Running);
+            Log.d(TAG, getApplicationContext().getFilesDir().getPath()+"/yggmail.db");
+            yggmail.setDatabaseName(getApplicationContext().getFilesDir().getPath()+"/yggmail.db");
 
-        yggmail.createPassword("delta");
-        yggmail.start("localhost:1025",
-                "localhost:1143",
-                PreferenceHelper.getMulticast(getApplicationContext()),
-                PreferenceHelper.getSelectedPublicPeers(getApplicationContext()));
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            yggmail.createPassword("delta");
+            yggmail.start("localhost:1025",
+                    "localhost:1143",
+                    PreferenceHelper.getMulticast(getApplicationContext()),
+                    PreferenceHelper.getSelectedPublicPeers(getApplicationContext()));
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Toast.makeText(getApplicationContext(), "account name " + yggmail.getAccountName() + "@yggmail copied to clipboard", Toast.LENGTH_LONG ).show();
+            Util.writeTextToClipboard(getApplicationContext(), yggmail.getAccountName() + "@yggmail");
         }
-        Toast.makeText(getApplicationContext(), "account name " + yggmail.getAccountName() + "@yggmail copied to clipboard", Toast.LENGTH_LONG ).show();
-        Util.writeTextToClipboard(getApplicationContext(), yggmail.getAccountName() + "@yggmail");
 
-        boolean isInitial = PreferenceHelper.getAccountName(getApplicationContext()).isEmpty() || true;
-        if (ipcServiceConnection == null && isInitial) {
+        boolean isInitial = PreferenceHelper.getAccountName(getApplicationContext()).isEmpty();
+        if (isInitial || ACTION_SEND_ACCOUNT_DATA.equals(action)) {
             ipcServiceConnection = new IPCServiceConnection(this);
             ipcServiceConnection.initAndSendAccountData(yggmail.getAccountName()+"@yggmail");
         }
@@ -157,7 +159,7 @@ public class YggmailService extends Service {
 
         public void initAndSendAccountData(String emailAddress) {
             if (this.serviceConnection != null) {
-                return;
+                context.unbindService(serviceConnection);
             }
             this.serviceConnection = new ServiceConnection() {
                 @Override
@@ -189,7 +191,6 @@ public class YggmailService extends Service {
 
         @Override
         public void close() {
-            Log.d(TAG, "close IPCServiceConnection");
             if (serviceConnection != null) {
                 Log.d(TAG, "close IPCServiceConnection -> unbind service");
                 context.unbindService(serviceConnection);

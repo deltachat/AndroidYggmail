@@ -18,6 +18,15 @@ public class PreferenceHelper {
     public static String PREF_SELECTED_PEERS = "PREF_SELECTED_PEERS";
     public static String PREF_SHOW_TIMESTAMPS = "PREF_SHOW_TIMESTAMPS";
     public static String PREF_SHOW_LOG_TAGS = "PREF_SHOW_LOG_TAGS";
+    public static String PREF_ACCOUNT_NAME = "PREF_ACCOUNT_NAME";
+
+    public static void setAccountName(Context context, String accountName) {
+        putString(context, PREF_ACCOUNT_NAME, accountName);
+    }
+
+    public static String getAccountName(Context context) {
+        return getString(context, PREF_ACCOUNT_NAME, "");
+    }
 
     public static boolean getShowLogTags(Context context) {
         return getBoolean(context, PREF_SHOW_LOG_TAGS, true);

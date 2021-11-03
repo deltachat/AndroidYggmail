@@ -33,7 +33,7 @@ public class Util {
 
 
     public static boolean isMainThread() {
-        return Looper.myLooper() == Looper.getMainLooper();
+        return Looper.myLooper() != null && Looper.myLooper() == Looper.getMainLooper();
     }
 
     public static void runOnMain(final @NonNull Runnable runnable) {

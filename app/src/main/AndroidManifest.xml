@@ -2,6 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.cyberta">
 
+    <queries>
+        <!-- Specific apps you interact with, eg: -->
+        <package android:name="chat.delta" />
+        <package android:name="chat.delta.beta" />
+        <package android:name="com.b44t.messenger"/>
+        <package android:name="com.b44t.messenger.beta"/>
+    </queries>
+
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

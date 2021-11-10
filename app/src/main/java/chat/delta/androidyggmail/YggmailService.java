@@ -135,7 +135,9 @@ public class YggmailService extends Service {
                 e.printStackTrace();
             }
             Toast.makeText(getApplicationContext(), "account name " + yggmail.getAccountName() + "@yggmail copied to clipboard", Toast.LENGTH_LONG ).show();
-            Util.writeTextToClipboard(getApplicationContext(), yggmail.getAccountName() + "@yggmail");
+            if (PreferenceHelper.useCustomMailClient(this)) {
+                Util.writeTextToClipboard(getApplicationContext(), yggmail.getAccountName() + "@yggmail");
+            }
             PreferenceHelper.setAccountName(this, yggmail.getAccountName());
         }
 

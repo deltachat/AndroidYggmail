@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/list"
-    android:name="org.cyberta.LogFragment"
+    android:name="chat.delta.androidyggmail.LogFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layoutManager="LinearLayoutManager"
-    tools:context=".logging.LogFragment"
+    tools:context="chat.delta.androidyggmail.logging.LogFragment"
     tools:listitem="@layout/log_item"
     />

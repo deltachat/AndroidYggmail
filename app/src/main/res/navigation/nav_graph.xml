@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="org.cyberta.FirstFragment"
+        android:name="chat.delta.androidyggmail.FirstFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_first">
 
@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/SettingsFragment"
-        android:name="org.cyberta.settings.SettingsFragment"
+        android:name="chat.delta.androidyggmail.settings.SettingsFragment"
         android:label="@string/action_settings"
         tools:layout="@layout/fragment_settings">
 
@@ -34,13 +34,13 @@
 
     <fragment
         android:id="@+id/LogFragment"
-        android:name="org.cyberta.logging.LogFragment"
+        android:name="chat.delta.androidyggmail.logging.LogFragment"
         android:label="@string/logs"
         tools:layout="@layout/fragment_log_list" />
 
     <fragment
         android:id="@+id/PeerSelectionFragment"
-        android:name="org.cyberta.settings.PeerSelectionFragment"
+        android:name="chat.delta.androidyggmail.settings.PeerSelectionFragment"
         android:label="@string/select_peers"
         tools:layout="@layout/fragment_peer_selection">
 

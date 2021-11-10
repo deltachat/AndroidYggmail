@@ -1,22 +1,27 @@
 package org.cyberta;
 
+import static android.content.Intent.CATEGORY_DEFAULT;
+import static org.cyberta.InstallHelper.sendDeltaChatInstallIntent;
+import static org.cyberta.YggmailService.SERVICE_ACTION_INSTALL_DC;
+
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
-
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.view.View;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import org.cyberta.databinding.ActivityMainBinding;
+import com.google.android.material.snackbar.Snackbar;
 
-import android.view.Menu;
-import android.view.MenuItem;
+import org.cyberta.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,6 +29,23 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
+
+    private final BroadcastReceiver yggmailServiceReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (SERVICE_ACTION_INSTALL_DC.equals(intent.getAction())) {
+                AlertDialog d = new AlertDialog.Builder(MainActivity.this)
+                        .setTitle(R.string.install_title)
+                        .setMessage(R.string.install_message)
+                        .setCancelable(false)
+                        .setPositiveButton(R.string.install_deltachat, (dialog, which) -> sendDeltaChatInstallIntent(context.getApplicationContext()))
+                        .setNegativeButton(R.string.no, null)
+                        .create();
+                d.show();
+
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +67,11 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addCategory(CATEGORY_DEFAULT);
+        intentFilter.addAction(SERVICE_ACTION_INSTALL_DC);
+        LocalBroadcastManager.getInstance(this).registerReceiver(yggmailServiceReceiver, intentFilter);
     }
 
     @Override
@@ -52,5 +79,11 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(yggmailServiceReceiver);
     }
 }

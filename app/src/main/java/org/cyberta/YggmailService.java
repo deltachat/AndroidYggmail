@@ -1,5 +1,10 @@
 package org.cyberta;
 
+import static org.cyberta.InstallHelper.DC_IPC_ACTION_ADD_ACCOUNT;
+import static org.cyberta.InstallHelper.DC_IPC_SERVICE;
+import static org.cyberta.InstallHelper.getInstalledDeltaChatPackageName;
+import static org.cyberta.InstallHelper.isDeltaChatInstalled;
+
 import android.app.Notification;
 import android.app.Service;
 import android.content.ComponentName;
@@ -16,6 +21,8 @@ import android.os.RemoteException;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import org.cyberta.logging.FileLogger;
 import org.cyberta.settings.PreferenceHelper;
 
@@ -26,10 +33,13 @@ import yggmail.Yggmail;
 import yggmail.Yggmail_;
 
 public class YggmailService extends Service {
+    private static final String TAG = YggmailService.class.getSimpleName();
 
+    // Actions sent to the the service
     public static final String ACTION_STOP = "ACTION_STOP";
     public static final String ACTION_SEND_ACCOUNT_DATA = "ACTION_SEND_ACCOUNT_DATA";
-    private static final String TAG = YggmailService.class.getSimpleName();
+    // Actions broadcasted from the service
+    public static final String SERVICE_ACTION_INSTALL_DC = "SERVICE_ACTION_INSTALL_DC";
 
     private YggmailNotificationManager notificationManager ;
     private Yggmail_ yggmail;
@@ -107,6 +117,7 @@ public class YggmailService extends Service {
             return START_NOT_STICKY;
         }
 
+        boolean isInitial = PreferenceHelper.getAccountName(getApplicationContext()).isEmpty();
         if (Yggmail.Stopped == yggmail.getState()) {
 
             YggmailOberservable.getInstance().setStatus(YggmailOberservable.Status.Running);
@@ -125,15 +136,32 @@ public class YggmailService extends Service {
             }
             Toast.makeText(getApplicationContext(), "account name " + yggmail.getAccountName() + "@yggmail copied to clipboard", Toast.LENGTH_LONG ).show();
             Util.writeTextToClipboard(getApplicationContext(), yggmail.getAccountName() + "@yggmail");
+            PreferenceHelper.setAccountName(this, yggmail.getAccountName());
         }
 
-        boolean isInitial = PreferenceHelper.getAccountName(getApplicationContext()).isEmpty();
-        if (isInitial || ACTION_SEND_ACCOUNT_DATA.equals(action)) {
+        if (ACTION_SEND_ACCOUNT_DATA.equals(action)) {
+            ipcServiceConnection = new IPCServiceConnection(this);
+            ipcServiceConnection.initAndSendAccountData(yggmail.getAccountName()+"@yggmail");
+            return START_NOT_STICKY;
+        }
+
+        if (!isDeltaChatInstalled(getPackageManager()) && !PreferenceHelper.useCustomMailClient(this)) {
+            broadcast(SERVICE_ACTION_INSTALL_DC);
+            return START_NOT_STICKY;
+        }
+
+        if (isInitial) {
             ipcServiceConnection = new IPCServiceConnection(this);
             ipcServiceConnection.initAndSendAccountData(yggmail.getAccountName()+"@yggmail");
         }
 
-        return super.onStartCommand(intent, flags, startId);
+        return START_NOT_STICKY;
+    }
+
+    private void broadcast(String action) {
+        Intent broadcastIntent = new Intent(action);
+        broadcastIntent.addCategory(Intent.CATEGORY_DEFAULT);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(broadcastIntent);
     }
 
     @Override
@@ -183,9 +211,8 @@ public class YggmailService extends Service {
                 }
             };
             Intent intent = new Intent();
-            // application Ids: chat.delta, com.b44t.messenger, chat.delta.beta, com.b44t.messenger.beta
-            intent.setComponent(new ComponentName("com.b44t.messenger.beta","org.thoughtcrime.securesms.service.IPCAddAccountsService"));
-            intent.setAction("chat.delta.addaccount");
+            intent.setComponent(new ComponentName(getInstalledDeltaChatPackageName(context), DC_IPC_SERVICE));
+            intent.setAction(DC_IPC_ACTION_ADD_ACCOUNT);
             context.bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
         }
 

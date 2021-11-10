@@ -8,6 +8,8 @@ import java.util.Set;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import org.cyberta.YggmailService;
+
 public class PreferenceHelper {
     private static final String TAG = PreferenceHelper.class.getSimpleName();
     public static String SHARED_PREFERENCES = "YGGMAIL_PREFERENCES";
@@ -19,6 +21,17 @@ public class PreferenceHelper {
     public static String PREF_SHOW_TIMESTAMPS = "PREF_SHOW_TIMESTAMPS";
     public static String PREF_SHOW_LOG_TAGS = "PREF_SHOW_LOG_TAGS";
     public static String PREF_ACCOUNT_NAME = "PREF_ACCOUNT_NAME";
+    public static String PREF_CUSTOM_CLIENT = "PREF_CUSTOM_CLIENT";
+
+
+
+    public static boolean useCustomMailClient(Context context) {
+        return getBoolean(context, PREF_CUSTOM_CLIENT, false);
+    }
+
+    public static void setUseCustomMailClient(Context context, boolean useCustomMailClient) {
+        putBoolean(context, PREF_CUSTOM_CLIENT, useCustomMailClient);
+    }
 
     public static void setAccountName(Context context, String accountName) {
         putString(context, PREF_ACCOUNT_NAME, accountName);
@@ -172,4 +185,5 @@ public class PreferenceHelper {
         SharedPreferences preferences = context.getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
         preferences.edit().putBoolean(key, value).apply();
     }
+
 }

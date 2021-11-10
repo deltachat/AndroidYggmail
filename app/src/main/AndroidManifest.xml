@@ -8,6 +8,8 @@
         <package android:name="chat.delta.beta" />
         <package android:name="com.b44t.messenger"/>
         <package android:name="com.b44t.messenger.beta"/>
+        <package android:name="org.fdroid.droid" />
+        <package android:name="com.android.vending" />
     </queries>
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />

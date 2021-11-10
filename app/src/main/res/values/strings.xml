@@ -34,5 +34,10 @@
     <string name="hide_log_tags">Hide tags</string>
     <string name="loading_peers">Loading peers …</string>
     <string name="loading_failed">Loading peer list failed.</string>
+    <string name="install_deltachat">Install Delta Chat</string>
+    <string name="cancel">Cancel</string>
+    <string name="install_title">Install request</string>
+    <string name="install_message">To read and send messages with AndroidYggmail you need to install an e-mail client. We recommend Delta Chat, but you can use any email client supporting @yggmail addresses. \nDo you want to install Delta Chat?</string>
+    <string name="no">No, thanks</string>
 
 </resources>

@@ -39,5 +39,8 @@
     <string name="install_title">Install request</string>
     <string name="install_message">To read and send messages with AndroidYggmail you need to install an e-mail client. We recommend Delta Chat, but you can use any email client supporting @yggmail addresses. \nDo you want to install Delta Chat?</string>
     <string name="no">No, thanks</string>
+    <string name="custom_client">Manually setup E-mail client</string>
+    <string name="show_setup_details">Show E-mail Settings</string>
+    <string name="description_custom_client">Enable this option if you don\'t want to use AndroidYggmail in conjunction with Delta Chat.</string>
 
 </resources>

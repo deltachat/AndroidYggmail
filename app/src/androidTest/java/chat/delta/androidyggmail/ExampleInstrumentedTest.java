@@ -1,4 +1,4 @@
-package chat.AndroidYggmail.delta;
+package chat.delta.androidyggmail;
 
 import android.content.Context;
 

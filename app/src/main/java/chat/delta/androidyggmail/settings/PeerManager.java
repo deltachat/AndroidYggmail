@@ -104,7 +104,7 @@ public class PeerManager extends Observable {
         int counter = 0;
         for (String address : selectedPeers) {
             Peer peer = addressPeerMap.get(address);
-            if (peer.countryKey.equals(countryKey)) {
+            if (peer != null && peer.countryKey.equals(countryKey)) {
                 counter++;
             }
         }
@@ -113,6 +113,9 @@ public class PeerManager extends Observable {
 
     public void toggleHeader(Peer peer) {
         ArrayList<Peer> peers = peerMap.get(peer.countryKey);
+        if (peers == null) {
+            return;
+        }
         for (Peer p : peers) {
             p.showItem = !p.showItem;
         }

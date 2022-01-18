@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.cyberta">
+    package="chat.delta.androidyggmail">
+
+    <queries>
+        <!-- Specific apps you interact with, eg: -->
+        <package android:name="chat.delta" />
+        <package android:name="chat.delta.beta" />
+        <package android:name="com.b44t.messenger"/>
+        <package android:name="com.b44t.messenger.beta"/>
+        <package android:name="org.fdroid.droid" />
+        <package android:name="com.android.vending" />
+    </queries>
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -30,6 +40,15 @@
             </intent-filter>
         </receiver>
 
+        <receiver
+            android:name=".DcBroadcastReceiver"
+            android:exported="true"
+            android:enabled="true">
+            <intent-filter android:priority="999">
+                <action android:name="chat.delta.DC_REQUEST_ACCOUNT_DATA" />
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
@@ -43,7 +62,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="org.cyberta.fileprovider"
+            android:authorities="chat.delta.androidyggmail.fileprovider"
             android:grantUriPermissions="true"
             android:exported="false">
             <meta-data

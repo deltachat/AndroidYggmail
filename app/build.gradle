@@ -7,7 +7,7 @@ android {
     buildToolsVersion "30.0.2"
 
     defaultConfig {
-        applicationId "org.cyberta"
+        applicationId "chat.delta.androidyggmail"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1

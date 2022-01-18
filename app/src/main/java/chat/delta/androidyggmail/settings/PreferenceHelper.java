@@ -87,7 +87,7 @@ public class PreferenceHelper {
             // german node
             defaultValues.add("tcp://bunkertreff.ddns.net:5454");
             // russian node
-            defaultValues.add("tcp://irk.peering.flying-squid.host:8080");
+            defaultValues.add("tls://kazi.peer.cofob.ru:18001");
             // us node
             defaultValues.add("tls://167.160.89.98:7040");
             // brazil node

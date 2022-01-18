@@ -77,7 +77,23 @@ public class PeerRecyclerViewAdapter extends RecyclerView.Adapter<PeerRecyclerVi
     @Override
     public void update(Observable o, Object arg) {
         if (o instanceof PeerManager) {
-            Util.runOnMain(this::notifyDataSetChanged);
+            Util.runOnMain(() -> {
+                notifyDataSetChanged();
+                updateActionBar(peerManager.getContext());
+            });
+        }
+    }
+
+    void updateActionBar(Context context) {
+        try {
+            ActionBar actionBar = ((AppCompatActivity) (context)).getSupportActionBar();
+            if (peerManager.selectedPeers.size() > 0) {
+                actionBar.setTitle(context.getString(R.string.select_n_peers, peerManager.selectedPeers.size()));
+            }  else {
+                actionBar.setTitle(context.getString(R.string.select_peers));
+            }
+        } catch (NullPointerException | ClassCastException e) {
+            e.printStackTrace();
         }
     }
 
@@ -118,17 +134,7 @@ public class PeerRecyclerViewAdapter extends RecyclerView.Adapter<PeerRecyclerVi
         public void onClickItemContainer(View v) {
             Log.d(TAG, "onClick " + getLayoutPosition() + " " + mItem.address);
             peerManager.toggleSelected(mItem);
-            try {
-                ActionBar actionBar = ((AppCompatActivity) v.getContext()).
-                        getSupportActionBar();
-                if (peerManager.selectedPeers.size() > 0) {
-                    actionBar.setTitle(v.getContext().getString(R.string.select_n_peers, peerManager.selectedPeers.size()));
-                }  else {
-                    actionBar.setTitle(v.getContext().getString(R.string.select_peers));
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            updateActionBar(v.getContext());
         }
 
         public void onClickHeaderContainer(View v) {

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import org.json.JSONException;
@@ -127,6 +128,7 @@ public class PeerManager extends Observable {
 
     public HashMap<String, ArrayList<Peer>> fromJson(String json) throws JSONException {
         HashMap<String, ArrayList<Peer>> peerMap = new HashMap<>();
+        HashSet<String> tmpSelectedPeers = new HashSet<>();
 
         JSONObject jsonObject = new JSONObject(json);
         Iterator<String> countryKeys = jsonObject.keys();
@@ -157,12 +159,13 @@ public class PeerManager extends Observable {
                 }
                 if (selectedPeers.contains(peer.address)) {
                     peer.isSelected = true;
+                    tmpSelectedPeers.add(peer.address);
                 }
                 countryList.add(peer);
                 addressPeerMap.put(peer.address, peer);
             }
         }
-        removeDeprecatedSelectedPeers();
+        selectedPeers = tmpSelectedPeers;
         return peerMap;
     }
 
@@ -191,20 +194,11 @@ public class PeerManager extends Observable {
         PreferenceHelper.setSelectedPeers(contextRef.get(), selectedPeers);
     }
 
-    private void removeDeprecatedSelectedPeers() {
-        HashSet<String> tmp = new HashSet<>(selectedPeers);
-        Collection<ArrayList<Peer>> countryLists = peerMap.values();
-        for (ArrayList<Peer> countryList : countryLists) {
-            for (Peer peer : countryList) {
-                if (selectedPeers.contains(peer.address)) {
-                    tmp.add(peer.address);
-                }
-            }
-        }
-        selectedPeers = tmp;
-    }
-
     private void parsePeerList(String peersJson) throws JSONException {
         peerMap =  fromJson(peersJson);
+    }
+
+    public @Nullable Context getContext() {
+        return contextRef.get();
     }
 }

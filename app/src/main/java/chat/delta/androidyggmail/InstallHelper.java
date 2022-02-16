@@ -1,5 +1,7 @@
 package chat.delta.androidyggmail;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -33,6 +35,7 @@ public class InstallHelper {
 
         intent.setData(Uri.parse(MARKET_URI + appPackageName));
         intent.setPackage(storePackageName);
+        intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
         try {
             context.startActivity(intent);
         } catch (android.content.ActivityNotFoundException anfe) {

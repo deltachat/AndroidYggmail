@@ -15,9 +15,12 @@ public class InstallHelper {
     public final static String GPLAY_DELTACHAT_BETA_PACKAGE = GPLAY_DELTACHAT_PACKAGE + ".beta";
     public final static String FDROID_DELTACHAT_PACKAGE = "com.b44t.messenger";
     public final static String FDROID_DELTACHAT_BETA_PACKAGE = FDROID_DELTACHAT_PACKAGE + ".beta";
+    public final static String DELTALAB_PACKAGE = "chat.delta.lite";
+    public final static String LITE_PACKAGE = "chat.delta.lite2";
     public final static String DC_IPC_SERVICE = "org.thoughtcrime.securesms.service.IPCAddAccountsService";
     public final static String DC_IPC_ACTION_ADD_ACCOUNT = "chat.delta.addaccount";
     public final static String MARKET_URI = "market://details?id=";
+    public final static String[] dcPackageNames = new String[]{FDROID_DELTACHAT_PACKAGE, GPLAY_DELTACHAT_PACKAGE, FDROID_DELTACHAT_BETA_PACKAGE, GPLAY_DELTACHAT_BETA_PACKAGE, DELTALAB_PACKAGE, LITE_PACKAGE};
 
     public static void sendDeltaChatInstallIntent(Context context) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -44,7 +47,6 @@ public class InstallHelper {
     }
 
     public static boolean isDeltaChatInstalled(PackageManager packageManager) {
-        String[] dcPackageNames = new String[]{FDROID_DELTACHAT_PACKAGE, GPLAY_DELTACHAT_PACKAGE, FDROID_DELTACHAT_BETA_PACKAGE, GPLAY_DELTACHAT_BETA_PACKAGE};
         for (String packageName : dcPackageNames) {
             if (isPackageInstalled(packageManager, packageName)) {
                 return true;
@@ -56,7 +58,6 @@ public class InstallHelper {
     // returns the first delta chat package name, prefers F-Droid over Gplay, stable releases over beta-releases
     public static String getInstalledDeltaChatPackageName(Context context) {
         PackageManager packageManager = context.getPackageManager();
-        String[] dcPackageNames = new String[]{FDROID_DELTACHAT_PACKAGE, GPLAY_DELTACHAT_PACKAGE, FDROID_DELTACHAT_BETA_PACKAGE, GPLAY_DELTACHAT_BETA_PACKAGE};
         for (String packageName : dcPackageNames) {
             if (isPackageInstalled(packageManager, packageName)) {
                 return packageName;

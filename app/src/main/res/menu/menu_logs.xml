@@ -22,4 +22,8 @@
         android:orderInCategory="98"
         android:title="@string/show_log_tags"
         app:showAsAction="never" />
+    <item android:id="@+id/action_clear_log"
+        android:orderInCategory="97"
+        android:title="@string/clear_log"
+        app:showAsAction="never" />
 </menu>

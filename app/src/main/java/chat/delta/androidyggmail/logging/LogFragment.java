@@ -132,6 +132,8 @@ public class LogFragment extends Fragment {
             recyclerViewAdapter.setShowLogTags(showLogTags);
             PreferenceHelper.setShowLogTags(getContext(), showLogTags);
             item.setTitle(showLogTags ? R.string.hide_log_tags : R.string.show_log_tags);
+        } else if (id == R.id.action_clear_log) {
+            LogObservable.getInstance().clearLog();
         }
         return super.onOptionsItemSelected(item);
     }

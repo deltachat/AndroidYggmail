@@ -38,6 +38,7 @@ public class YggmailService extends Service {
     // Actions sent to the the service
     public static final String ACTION_STOP = "ACTION_STOP";
     public static final String ACTION_SEND_ACCOUNT_DATA = "ACTION_SEND_ACCOUNT_DATA";
+    public static final String ACTION_CLEARLOG = "ACTION_CLEARLOG";
     // Actions broadcasted from the service
     public static final String SERVICE_ACTION_INSTALL_DC = "SERVICE_ACTION_INSTALL_DC";
 
@@ -114,6 +115,10 @@ public class YggmailService extends Service {
 
             notificationManager.cancelNotifications();
             stopSelf();
+            return START_NOT_STICKY;
+        } else if (ACTION_CLEARLOG.equals(action)) {
+            Log.d(TAG, "onStartCommand ACTION_CLEARLOG");
+            fileLogger.reset();
             return START_NOT_STICKY;
         }
 

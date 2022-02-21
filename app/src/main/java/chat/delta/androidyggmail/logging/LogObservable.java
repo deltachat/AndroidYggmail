@@ -41,6 +41,14 @@ public class LogObservable extends Observable {
         });
     }
 
+    public void clearLog() {
+        Util.runOnMain(() -> {
+            logs.clear();
+            setChanged();
+            notifyObservers();
+        });
+    }
+
     public ArrayList<LogItem> getLogs() {
         return logs;
     }

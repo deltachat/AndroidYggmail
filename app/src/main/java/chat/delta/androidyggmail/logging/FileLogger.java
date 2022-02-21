@@ -15,20 +15,26 @@ public class FileLogger {
     public static String DEBUG_LOG = "/log.txt";
     private final Object LOG_WRITER_LOCK = new Object();
     private BufferedWriter logWriter;
+    private Context context;
     Handler fileWriterHandler;
     HandlerThread handlerThread;
     LogObservable logObservable;
 
 
     public  FileLogger(Context context) {
+        this.context = context;
+        logObservable = LogObservable.getInstance();
+        handlerThread = new HandlerThread("fileWriterHandler");
+        handlerThread.start();
+        fileWriterHandler = new Handler(handlerThread.getLooper());
+        reset();
+    }
+
+    public void reset() {
         try {
             File file = new File(context.getCacheDir() + DEBUG_LOG);
             file.createNewFile();
-            logWriter  =  new BufferedWriter(new FileWriter(context.getCacheDir() + DEBUG_LOG));
-            handlerThread = new HandlerThread("fileWriterHandler");
-            handlerThread.start();
-            fileWriterHandler = new Handler(handlerThread.getLooper());
-            logObservable = LogObservable.getInstance();
+            logWriter = new BufferedWriter(new FileWriter(context.getCacheDir() + DEBUG_LOG));
         } catch (
                 IOException e) {
             e.printStackTrace();

@@ -32,6 +32,7 @@
     <string name="hide_timestamps">Hide timestamps</string>
     <string name="show_log_tags">Show tags</string>
     <string name="hide_log_tags">Hide tags</string>
+    <string name="clear_log">Clear logs</string>
     <string name="loading_peers">Loading peers …</string>
     <string name="loading_failed">Loading peer list failed.</string>
     <string name="install_deltachat">Install Delta Chat</string>

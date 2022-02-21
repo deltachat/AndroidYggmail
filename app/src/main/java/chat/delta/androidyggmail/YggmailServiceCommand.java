@@ -6,6 +6,7 @@ import android.os.Build;
 
 import static chat.delta.androidyggmail.YggmailService.ACTION_SEND_ACCOUNT_DATA;
 import static chat.delta.androidyggmail.YggmailService.ACTION_STOP;
+import static chat.delta.androidyggmail.YggmailService.ACTION_CLEARLOG;
 
 public class YggmailServiceCommand {
 
@@ -32,6 +33,15 @@ public class YggmailServiceCommand {
         }
         Intent intent = new Intent(context.getApplicationContext(), YggmailService.class);
         intent.setAction(ACTION_STOP);
+        startServiceIntent(context, intent);
+    }
+
+    public static void clearLog(Context context) {
+        if (context == null) {
+            return;
+        }
+        Intent intent = new Intent(context.getApplicationContext(), YggmailService.class);
+        intent.setAction(ACTION_CLEARLOG);
         startServiceIntent(context, intent);
     }
 

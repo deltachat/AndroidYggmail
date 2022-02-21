@@ -26,6 +26,7 @@ import java.io.File;
 import chat.delta.androidyggmail.settings.PreferenceHelper;
 import chat.delta.androidyggmail.R;
 import chat.delta.androidyggmail.Util;
+import chat.delta.androidyggmail.YggmailServiceCommand;
 
 /**
  * A fragment representing a list of log entries.
@@ -132,6 +133,9 @@ public class LogFragment extends Fragment {
             recyclerViewAdapter.setShowLogTags(showLogTags);
             PreferenceHelper.setShowLogTags(getContext(), showLogTags);
             item.setTitle(showLogTags ? R.string.hide_log_tags : R.string.show_log_tags);
+        } else if (id == R.id.action_clear_log) {
+            LogObservable.getInstance().clearLog();
+            YggmailServiceCommand.clearLog(this.getContext());
         }
         return super.onOptionsItemSelected(item);
     }

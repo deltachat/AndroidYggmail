@@ -41,7 +41,14 @@
     <string name="install_message">To read and send messages with AndroidYggmail you need to install an e-mail client. We recommend Delta Chat, but you can use any email client supporting @yggmail addresses. \nDo you want to install Delta Chat?</string>
     <string name="no">No, thanks</string>
     <string name="custom_client">Manually setup E-mail client</string>
-    <string name="show_setup_details">Show E-mail Settings</string>
     <string name="description_custom_client">Enable this option if you don\'t want to use AndroidYggmail in conjunction with Delta Chat.</string>
-
+    <string name="imap_server">IMAP server:</string>
+    <string name="imap_port">IMAP port:</string>
+    <string name="user_name">User name:</string>
+    <string name="imap_security">IMAP security:</string>
+    <string name="smtp_server">SMTP server:</string>
+    <string name="smtp_port">SMTP port:</string>
+    <string name="smtp_security">SMTP security:</string>
+    <string name="password">Password:</string>
+    <string name="start_to_create_user">Tap the start button on the main page to create an account.</string>
 </resources>

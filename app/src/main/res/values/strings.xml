@@ -12,8 +12,10 @@
 
     <string name="hello_first_fragment">Account name will be copied to clipboard if you press \'start\' \n Password: delta \n IMAP server: localhost \n IMAP port: 1143 \n IMAP Security: OFF \n SMTP server: localhost \n SMTP port: 1025 \n SMTP security: OFF</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="notification_running">Yggmail is running.</string>
-    <string name="notification_error">An error occurred.</string>
+    <string name="state_running">Yggmail is running.</string>
+    <string name="state_error">An error occurred. Please check the logs.</string>
+    <string name="state_off">Yggmail is not running.</string>
+    <string name="state_initial">Press start to run an email server on your phone and create a new yggmail account.</string>
     <string name="notification_channel_name">Yggmail status</string>
     <string name="notification_channel_description">Informs about Yggmail status and allows to stop and restart the Yggmail background service.</string>
     <string name="current_session">Current session</string>

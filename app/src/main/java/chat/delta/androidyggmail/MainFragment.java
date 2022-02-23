@@ -1,5 +1,7 @@
 package chat.delta.androidyggmail;
 
+import static chat.delta.androidyggmail.settings.PreferenceHelper.getAccountName;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -42,7 +44,7 @@ public class MainFragment extends Fragment implements Observer {
 
        updateUI();
 
-        binding.buttonFirst.setOnClickListener(new View.OnClickListener() {
+        binding.buttonStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 switch (YggmailOberservable.getInstance().getStatus()) {
@@ -50,8 +52,8 @@ public class MainFragment extends Fragment implements Observer {
                         YggmailServiceCommand.stopYggmail(MainFragment.this.getContext());
                         break;
                     case Stopped:
-                        binding.buttonFirst.setEnabled(false);
-                        binding.buttonFirst.setText(R.string.stop);
+                        binding.buttonStart.setEnabled(false);
+                        binding.buttonStart.setText(R.string.stop);
                         YggmailServiceCommand.startYggmail(MainFragment.this.getContext());
                         break;
                     default:
@@ -64,19 +66,23 @@ public class MainFragment extends Fragment implements Observer {
     private void updateUI() {
         switch (YggmailOberservable.getInstance().getStatus()) {
             case Error:
-                binding.buttonFirst.setEnabled(true);
-                binding.buttonFirst.setText(R.string.restart);
+                binding.buttonStart.setEnabled(true);
+                binding.buttonStart.setText(R.string.restart);
+                binding.title.setText(R.string.state_error);
                 break;
             case Stopped:
-                binding.buttonFirst.setEnabled(true);
-                binding.buttonFirst.setText(R.string.start);
+                binding.buttonStart.setEnabled(true);
+                binding.buttonStart.setText(R.string.start);
+                binding.title.setText(getAccountName(getContext()).isEmpty() ?
+                        R.string.state_initial : R.string.state_off);
                 break;
             case ShuttingDown:
-                binding.buttonFirst.setEnabled(false);
+                binding.buttonStart.setEnabled(false);
                 break;
             case Running:
-                binding.buttonFirst.setEnabled(true);
-                binding.buttonFirst.setText(R.string.stop);
+                binding.buttonStart.setEnabled(true);
+                binding.buttonStart.setText(R.string.stop);
+                binding.title.setText(R.string.state_running);
                 break;
             default:
                 break;

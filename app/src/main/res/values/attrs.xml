@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="text" format="string|reference"/>
+    <attr name="value" format="string|reference"/>
+    <attr name="showCopy" format="boolean"/>
+    <declare-styleable name="CopySettingsEntry">
+        <attr name="text"/>
+        <attr name="value" />
+        <attr name="showCopy"/>
+    </declare-styleable>
+</resources>

@@ -30,7 +30,7 @@
         android:layout_height="400dp"
         android:maxHeight="400dp"
         android:id="@+id/background_image"
-        android:src="@drawable/ic_leaf_yggmail_black"
+        android:src="@drawable/ic_leaf_yggmail_black_transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/guideline_vertical_first"

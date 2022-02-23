@@ -139,8 +139,8 @@ public class YggmailService extends Service {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            Toast.makeText(getApplicationContext(), "account name " + yggmail.getAccountName() + "@yggmail copied to clipboard", Toast.LENGTH_LONG ).show();
             if (PreferenceHelper.useCustomMailClient(this)) {
+                Toast.makeText(getApplicationContext(), "account name " + yggmail.getAccountName() + "@yggmail copied to clipboard", Toast.LENGTH_LONG ).show();
                 Util.writeTextToClipboard(getApplicationContext(), yggmail.getAccountName() + "@yggmail");
             }
             PreferenceHelper.setAccountName(this, yggmail.getAccountName());
@@ -157,7 +157,7 @@ public class YggmailService extends Service {
             return START_NOT_STICKY;
         }
 
-        if (isInitial) {
+        if (isInitial && !PreferenceHelper.useCustomMailClient(this)) {
             ipcServiceConnection = new IPCServiceConnection(this);
             ipcServiceConnection.initAndSendAccountData(yggmail.getAccountName()+"@yggmail");
         }

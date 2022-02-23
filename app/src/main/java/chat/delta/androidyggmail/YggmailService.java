@@ -157,7 +157,7 @@ public class YggmailService extends Service {
             return START_NOT_STICKY;
         }
 
-        if (isInitial) {
+        if (isInitial && !PreferenceHelper.useCustomMailClient(this)) {
             ipcServiceConnection = new IPCServiceConnection(this);
             ipcServiceConnection.initAndSendAccountData(yggmail.getAccountName()+"@yggmail");
         }

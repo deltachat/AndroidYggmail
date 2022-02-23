@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -48,6 +49,7 @@ public class CopySettingsEntry extends LinearLayoutCompat {
         binding.copy.setOnClickListener(v -> {
             String text = (String) binding.value.getText();
             Util.writeTextToClipboard(context, text);
+            Toast.makeText(context.getApplicationContext(), context.getString(R.string.copied_to_clipboard), Toast.LENGTH_SHORT).show();
         });
     }
 

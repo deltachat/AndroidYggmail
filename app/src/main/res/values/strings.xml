@@ -2,7 +2,7 @@
     <string name="app_name">AndroidYggMail</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">Yggmail Android Experiment</string>
+    <string name="first_fragment_label">Yggmail Android</string>
     <string name="start">Start</string>
     <string name="stop">Stop</string>
     <string name="previous">Previous</string>

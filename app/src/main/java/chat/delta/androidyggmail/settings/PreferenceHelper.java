@@ -20,8 +20,18 @@ public class PreferenceHelper {
     public static String PREF_SHOW_LOG_TAGS = "PREF_SHOW_LOG_TAGS";
     public static String PREF_ACCOUNT_NAME = "PREF_ACCOUNT_NAME";
     public static String PREF_CUSTOM_CLIENT = "PREF_CUSTOM_CLIENT";
+    public static String PREF_LAST_UPDATED = "PREF_LAST_UPDATED";
 
+    private static long THREE_DAYS = 1000*60*60*24L*3;
 
+    public static void setLastUpdate(Context context, long timestamp) {
+        putLong(context, PREF_LAST_UPDATED, timestamp);
+    }
+
+    public static boolean shouldUpdate(Context context) {
+        long lastUpdated = getLong(context, PREF_LAST_UPDATED, 0);
+        return System.currentTimeMillis() - lastUpdated > THREE_DAYS && getConnectToPublicPeers(context);
+    }
 
     public static boolean useCustomMailClient(Context context) {
         return getBoolean(context, PREF_CUSTOM_CLIENT, false);
@@ -168,7 +178,7 @@ public class PreferenceHelper {
 
     private static Boolean getBoolean(Context context, String key, Boolean defValue) {
         if (context == null) {
-            return false;
+            return defValue;
         }
 
         SharedPreferences preferences = context.getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
@@ -182,6 +192,24 @@ public class PreferenceHelper {
 
         SharedPreferences preferences = context.getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
         preferences.edit().putBoolean(key, value).apply();
+    }
+
+    private static void putLong(Context context, String key, long value) {
+        if (context == null) {
+            return;
+        }
+
+        SharedPreferences preferences = context.getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
+        preferences.edit().putLong(key, value).apply();
+    }
+
+    private static long getLong(Context context, String key, long defValue) {
+        if (context == null) {
+            return defValue;
+        }
+
+        SharedPreferences preferences = context.getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
+        return preferences.getLong(key, defValue);
     }
 
 }

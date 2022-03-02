@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/yellow_700"
+    android:id="@+id/main_content_container"
     tools:context="chat.delta.androidyggmail.MainFragment">
 
     <androidx.constraintlayout.widget.Guideline
@@ -23,6 +24,17 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintGuide_percent="0.84"
         />
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:id="@+id/snackbar_coordinator"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        >
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 
 
     <androidx.appcompat.widget.AppCompatImageView

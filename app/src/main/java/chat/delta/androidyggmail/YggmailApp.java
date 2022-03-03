@@ -4,11 +4,11 @@ import android.app.Application;
 
 public class YggmailApp extends Application {
 
-    private YggmailOberservable yggmailOberservable;
+    private YggmailObservable yggmailObservable;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        this.yggmailOberservable = YggmailOberservable.getInstance();
+        this.yggmailObservable = YggmailObservable.getInstance();
     }
 }

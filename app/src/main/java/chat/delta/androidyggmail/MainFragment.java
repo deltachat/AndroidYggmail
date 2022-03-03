@@ -47,7 +47,7 @@ public class MainFragment extends Fragment implements Observer {
             Bundle savedInstanceState
     ) {
 
-        YggmailOberservable.getInstance().addObserver(this);
+        YggmailObservable.getInstance().addObserver(this);
         binding = FragmentMainBinding.inflate(inflater, container, false);
         setHasOptionsMenu(true);
 
@@ -72,7 +72,7 @@ public class MainFragment extends Fragment implements Observer {
         binding.buttonStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switch (YggmailOberservable.getInstance().getStatus()) {
+                switch (YggmailObservable.getInstance().getStatus()) {
                     case Running:
                         YggmailServiceCommand.stopYggmail(MainFragment.this.getContext());
                         break;
@@ -92,7 +92,7 @@ public class MainFragment extends Fragment implements Observer {
     }
 
     private void updateUI() {
-        switch (YggmailOberservable.getInstance().getStatus()) {
+        switch (YggmailObservable.getInstance().getStatus()) {
             case Error:
                 binding.buttonStart.setEnabled(true);
                 binding.buttonStart.setText(R.string.restart);
@@ -148,13 +148,13 @@ public class MainFragment extends Fragment implements Observer {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
-        YggmailOberservable.getInstance().deleteObserver(this);
+        YggmailObservable.getInstance().deleteObserver(this);
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(broadcastReceiver);
     }
 
     @Override
     public void update(Observable o, Object arg) {
-        if (o instanceof YggmailOberservable) {
+        if (o instanceof YggmailObservable) {
             updateUI();
         }
     }

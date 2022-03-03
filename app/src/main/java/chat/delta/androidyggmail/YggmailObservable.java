@@ -2,9 +2,9 @@ package chat.delta.androidyggmail;
 
 import java.util.Observable;
 
-public class YggmailOberservable extends Observable {
+public class YggmailObservable extends Observable {
 
-    private static YggmailOberservable instance;
+    private static YggmailObservable instance;
     public enum Status {
         Stopped,
         Running,
@@ -13,10 +13,12 @@ public class YggmailOberservable extends Observable {
     }
     private Status status = Status.Stopped;
 
-    private YggmailOberservable() {}
-    public static YggmailOberservable getInstance() {
+    private YggmailObservable() {
+    }
+
+    public static YggmailObservable getInstance() {
         if (instance == null) {
-            instance = new YggmailOberservable();
+            instance = new YggmailObservable();
         }
         return instance;
     }

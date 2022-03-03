@@ -155,7 +155,7 @@ public class MainFragment extends Fragment implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         if (o instanceof YggmailObservable) {
-            updateUI();
+            Util.runOnMain(this::updateUI);
         }
     }
 

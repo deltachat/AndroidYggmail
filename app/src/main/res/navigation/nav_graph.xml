@@ -3,19 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/MainFragment">
 
     <fragment
-        android:id="@+id/FirstFragment"
-        android:name="chat.delta.androidyggmail.FirstFragment"
+        android:id="@+id/MainFragment"
+        android:name="chat.delta.androidyggmail.MainFragment"
         android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
+        tools:layout="@layout/fragment_main">
 
         <action
-            android:id="@+id/action_SecondFragment_to_LogFragment"
+            android:id="@+id/action_MainFragment_to_LogFragment"
             app:destination="@id/LogFragment" />
         <action
-            android:id="@+id/action_SecondFragment_to_SettingsFragment"
+            android:id="@+id/action_MainFragment_to_SettingsFragment"
             app:destination="@+id/SettingsFragment" />
     </fragment>
     <fragment
@@ -25,8 +25,8 @@
         tools:layout="@layout/fragment_settings">
 
         <action
-            android:id="@+id/action_SettingsFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+            android:id="@+id/action_SettingsFragment_to_MainFragment"
+            app:destination="@id/MainFragment" />
         <action
             android:id="@+id/action_SettingsFragment_to_PeerSelectionFragment"
             app:destination="@id/PeerSelectionFragment" />

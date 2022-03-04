@@ -1,5 +1,7 @@
 package chat.delta.androidyggmail;
 
+import static chat.delta.androidyggmail.settings.PreferenceHelper.getAccountName;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,16 +15,15 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
-
 import java.util.Observable;
 import java.util.Observer;
 
-import chat.delta.androidyggmail.databinding.FragmentFirstBinding;
+import chat.delta.androidyggmail.databinding.FragmentMainBinding;
 
-public class FirstFragment extends Fragment implements Observer {
+public class MainFragment extends Fragment implements Observer {
 
-    private static final String TAG = FirstFragment.class.getSimpleName();
-    private FragmentFirstBinding binding;
+    private static final String TAG = MainFragment.class.getSimpleName();
+    private FragmentMainBinding binding;
 
     @Override
     public View onCreateView(
@@ -31,7 +32,7 @@ public class FirstFragment extends Fragment implements Observer {
     ) {
 
         YggmailOberservable.getInstance().addObserver(this);
-        binding = FragmentFirstBinding.inflate(inflater, container, false);
+        binding = FragmentMainBinding.inflate(inflater, container, false);
         setHasOptionsMenu(true);
 
         return binding.getRoot();
@@ -43,17 +44,17 @@ public class FirstFragment extends Fragment implements Observer {
 
        updateUI();
 
-        binding.buttonFirst.setOnClickListener(new View.OnClickListener() {
+        binding.buttonStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 switch (YggmailOberservable.getInstance().getStatus()) {
                     case Running:
-                        YggmailServiceCommand.stopYggmail(FirstFragment.this.getContext());
+                        YggmailServiceCommand.stopYggmail(MainFragment.this.getContext());
                         break;
                     case Stopped:
-                        binding.buttonFirst.setEnabled(false);
-                        binding.buttonFirst.setText(R.string.stop);
-                        YggmailServiceCommand.startYggmail(FirstFragment.this.getContext());
+                        binding.buttonStart.setEnabled(false);
+                        binding.buttonStart.setText(R.string.stop);
+                        YggmailServiceCommand.startYggmail(MainFragment.this.getContext());
                         break;
                     default:
                         break;
@@ -65,19 +66,23 @@ public class FirstFragment extends Fragment implements Observer {
     private void updateUI() {
         switch (YggmailOberservable.getInstance().getStatus()) {
             case Error:
-                binding.buttonFirst.setEnabled(true);
-                binding.buttonFirst.setText(R.string.restart);
+                binding.buttonStart.setEnabled(true);
+                binding.buttonStart.setText(R.string.restart);
+                binding.title.setText(R.string.state_error);
                 break;
             case Stopped:
-                binding.buttonFirst.setEnabled(true);
-                binding.buttonFirst.setText(R.string.start);
+                binding.buttonStart.setEnabled(true);
+                binding.buttonStart.setText(R.string.start);
+                binding.title.setText(getAccountName(getContext()).isEmpty() ?
+                        R.string.state_initial : R.string.state_off);
                 break;
             case ShuttingDown:
-                binding.buttonFirst.setEnabled(false);
+                binding.buttonStart.setEnabled(false);
                 break;
             case Running:
-                binding.buttonFirst.setEnabled(true);
-                binding.buttonFirst.setText(R.string.stop);
+                binding.buttonStart.setEnabled(true);
+                binding.buttonStart.setText(R.string.stop);
+                binding.title.setText(R.string.state_running);
                 break;
             default:
                 break;
@@ -103,17 +108,15 @@ public class FirstFragment extends Fragment implements Observer {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logs) {
-            NavHostFragment.findNavController(FirstFragment.this)
-                    .navigate(R.id.action_SecondFragment_to_LogFragment);
+            NavHostFragment.findNavController(MainFragment.this)
+                    .navigate(R.id.action_MainFragment_to_LogFragment);
             return true;
         } else if (id == R.id.action_settings) {
-            NavHostFragment.findNavController(FirstFragment.this)
-                    .navigate(R.id.action_SecondFragment_to_SettingsFragment);
+            NavHostFragment.findNavController(MainFragment.this)
+                    .navigate(R.id.action_MainFragment_to_SettingsFragment);
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 
     @Override
     public void onDestroyView() {

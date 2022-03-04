@@ -36,7 +36,7 @@ public class YggmailNotificationManager {
         notificationBuilder
                 .setSmallIcon(R.drawable.ic_notification_light)
                 .setWhen(System.currentTimeMillis())
-                .setContentTitle(context.getString(R.string.notification_running))
+                .setContentTitle(context.getString(R.string.state_running))
                 .setContentIntent(getContentPendingIntent())
                 .addAction(actionBuilder.build());
 
@@ -55,7 +55,7 @@ public class YggmailNotificationManager {
         notificationBuilder
                 .setSmallIcon(R.drawable.ic_dialog_alert)
                 .setWhen(System.currentTimeMillis())
-                .setContentTitle(context.getString(R.string.notification_error))
+                .setContentTitle(context.getString(R.string.state_error))
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(error))
                 .setContentIntent(getContentPendingIntent())
                 .addAction(actionBuilder.build());

@@ -23,8 +23,14 @@ import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 
+import static chat.delta.androidyggmail.settings.PeerManager.EXTRA_SELECTED_PEERS;
+import static chat.delta.androidyggmail.settings.PreferenceHelper.getConnectToPublicPeers;
+import static chat.delta.androidyggmail.settings.PreferenceHelper.getMulticast;
+
 import chat.delta.androidyggmail.MainActivity;
 import chat.delta.androidyggmail.R;
+import chat.delta.androidyggmail.YggmailOberservable;
+import chat.delta.androidyggmail.YggmailServiceCommand;
 import chat.delta.androidyggmail.databinding.FragmentPeerSelectionBinding;
 
 
@@ -51,6 +57,7 @@ public class PeerSelectionFragment extends Fragment {
         intentFilter.addAction(PeerManager.EVENT_LOADING_PEERS_STARTED);
         intentFilter.addAction(PeerManager.EVENT_LOADING_PEERS_FINISHED);
         intentFilter.addAction(PeerManager.EVENT_LOADING_PEERS_FAILED);
+        intentFilter.addAction(PeerManager.EVENT_LOADING_PEERS_SELECTED_PEERS_CHANGED);
         intentFilter.addCategory(CATEGORY_DEFAULT);
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(broadcastReceiver, intentFilter);
 
@@ -107,6 +114,15 @@ public class PeerSelectionFragment extends Fragment {
                        binding.loadingContainer.setVisibility(VISIBLE);
                        binding.loadingProgress.setVisibility(INVISIBLE);
                        binding.loadingDescription.setText(R.string.loading_failed);
+                   }
+                   break;
+               case PeerManager.EVENT_LOADING_PEERS_SELECTED_PEERS_CHANGED:
+                   int selectedPeers = intent.getIntExtra(EXTRA_SELECTED_PEERS, 0);
+                   if (selectedPeers == 0 && getConnectToPublicPeers(getContext()) && !getMulticast(getContext())) {
+                       YggmailServiceCommand.stopYggmail(context);
+                   } else if (YggmailOberservable.getInstance().getStatus() == YggmailOberservable.Status.Running) {
+                       YggmailServiceCommand.stopYggmail(context);
+                       YggmailServiceCommand.startYggmail(context);
                    }
                    break;
                case PeerManager.EVENT_LOADING_PEERS_FINISHED:

@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.util.Pair;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import org.json.JSONException;
@@ -20,6 +21,7 @@ import java.util.Iterator;
 import java.util.Observable;
 
 import chat.delta.androidyggmail.Peer;
+import chat.delta.androidyggmail.YggmailOberservable;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -30,6 +32,8 @@ public class PeerManager extends Observable {
     public static final String PEER_URL = "https://publicpeers.neilalexander.dev/publicnodes.json";
     public static final String EVENT_LOADING_PEERS_STARTED = "EVENT_LOADING_PEERS_STARTED";
     public static final String EVENT_LOADING_PEERS_FINISHED = "EVENT_LOADING_PEERS_FINISHED";
+    public static final String EVENT_LOADING_PEERS_SELECTED_PEERS_CHANGED = "EVENT_LOADING_PEERS_SELECTED_PEERS_CHANGED";
+    public static final String EXTRA_SELECTED_PEERS = "EXTRA_SELECTED_PEERS";
     public static final String EVENT_LOADING_PEERS_FAILED = "EVENT_LOADING_PEERS_FAILED";
     private static final String TAG = PeerManager.class.getSimpleName();
 
@@ -70,9 +74,14 @@ public class PeerManager extends Observable {
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 try {
                     String responseJson = response.body().string();
-                    parsePeerList(responseJson);
+                    boolean hasSelectedPeerSizeChanged = parsePeerList(responseJson);
                     PreferenceHelper.setPublicPeers(context, responseJson);
                     updateDisplayList();
+                    if (hasSelectedPeerSizeChanged) {
+                        Intent intent = getEvent(EVENT_LOADING_PEERS_SELECTED_PEERS_CHANGED);
+                        intent.putExtra(EXTRA_SELECTED_PEERS, selectedPeers.size());
+                        localBroadcastManager.sendBroadcast(intent);
+                    }
                     localBroadcastManager.sendBroadcast(getEvent(EVENT_LOADING_PEERS_FINISHED));
                     PeerManager.this.setChanged();
                     PeerManager.this.notifyObservers();
@@ -126,7 +135,7 @@ public class PeerManager extends Observable {
         PeerManager.this.notifyObservers();
     }
 
-    public HashMap<String, ArrayList<Peer>> fromJson(String json) throws JSONException {
+    public Pair<HashMap<String, ArrayList<Peer>>, Boolean> fromJson(String json) throws JSONException {
         HashMap<String, ArrayList<Peer>> peerMap = new HashMap<>();
         HashSet<String> tmpSelectedPeers = new HashSet<>();
 
@@ -165,8 +174,9 @@ public class PeerManager extends Observable {
                 addressPeerMap.put(peer.address, peer);
             }
         }
+        boolean selectedPeerSizeChanged = selectedPeers.size() != tmpSelectedPeers.size();
         selectedPeers = tmpSelectedPeers;
-        return peerMap;
+        return new Pair<>(peerMap, selectedPeerSizeChanged);
     }
 
     public ArrayList<Peer> getDisplayList() {
@@ -194,8 +204,10 @@ public class PeerManager extends Observable {
         PreferenceHelper.setSelectedPeers(contextRef.get(), selectedPeers);
     }
 
-    private void parsePeerList(String peersJson) throws JSONException {
-        peerMap =  fromJson(peersJson);
+    private boolean parsePeerList(String peersJson) throws JSONException {
+        Pair<HashMap<String, ArrayList<Peer>>, Boolean> result = fromJson(peersJson);
+        peerMap =  result.first;
+        return result.second;
     }
 
     public @Nullable Context getContext() {

@@ -53,4 +53,5 @@
     <string name="smtp_security">SMTP security:</string>
     <string name="password">Password:</string>
     <string name="start_to_create_user">Tap the start button on the main page to create an account.</string>
+    <string name="loading_finished">Peer list successfully loaded.</string>
 </resources>

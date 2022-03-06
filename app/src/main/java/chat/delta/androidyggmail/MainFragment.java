@@ -1,8 +1,15 @@
 package chat.delta.androidyggmail;
 
+import static android.content.Intent.CATEGORY_DEFAULT;
+import static chat.delta.androidyggmail.settings.PeerManager.EXTRA_SELECTED_PEERS;
 import static chat.delta.androidyggmail.settings.PreferenceHelper.getAccountName;
+import static chat.delta.androidyggmail.settings.PreferenceHelper.getConnectToPublicPeers;
+import static chat.delta.androidyggmail.settings.PreferenceHelper.getMulticast;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -10,20 +17,29 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.fragment.NavHostFragment;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Observable;
 import java.util.Observer;
 
 import chat.delta.androidyggmail.databinding.FragmentMainBinding;
+import chat.delta.androidyggmail.settings.PeerManager;
+import chat.delta.androidyggmail.settings.PreferenceHelper;
 
 public class MainFragment extends Fragment implements Observer {
 
     private static final String TAG = MainFragment.class.getSimpleName();
     private FragmentMainBinding binding;
+    private PeerManager peerManager;
+    private PeerBroadcastReceiver broadcastReceiver;
+
 
     @Override
     public View onCreateView(
@@ -41,8 +57,17 @@ public class MainFragment extends Fragment implements Observer {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        peerManager = new PeerManager(getContext());
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(PeerManager.EVENT_LOADING_PEERS_STARTED);
+        intentFilter.addAction(PeerManager.EVENT_LOADING_PEERS_FINISHED);
+        intentFilter.addAction(PeerManager.EVENT_LOADING_PEERS_FAILED);
+        intentFilter.addAction(PeerManager.EVENT_LOADING_PEERS_SELECTED_PEERS_CHANGED);
+        intentFilter.addCategory(CATEGORY_DEFAULT);
+        broadcastReceiver = new PeerBroadcastReceiver();
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(broadcastReceiver, intentFilter);
 
-       updateUI();
+        updateUI();
 
         binding.buttonStart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,6 +86,9 @@ public class MainFragment extends Fragment implements Observer {
                 }
             }
         });
+        if (PreferenceHelper.shouldUpdate(getContext())) {
+            peerManager.fetchPeers(getContext());
+        }
     }
 
     private void updateUI() {
@@ -95,8 +123,6 @@ public class MainFragment extends Fragment implements Observer {
         inflater.inflate(R.menu.menu_main, menu);
     }
 
-
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -123,12 +149,51 @@ public class MainFragment extends Fragment implements Observer {
         super.onDestroyView();
         binding = null;
         YggmailOberservable.getInstance().deleteObserver(this);
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(broadcastReceiver);
     }
 
     @Override
     public void update(Observable o, Object arg) {
         if (o instanceof YggmailOberservable) {
             updateUI();
+        }
+    }
+
+    private class PeerBroadcastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            View root = binding.snackbarCoordinator;
+            if (root == null) { return; }
+            switch (intent.getAction()) {
+                case PeerManager.EVENT_LOADING_PEERS_STARTED:
+                    Snackbar bar = Snackbar.make(root, R.string.loading_peers, Snackbar.LENGTH_INDEFINITE);
+                    ViewGroup contentLay = (ViewGroup) bar.getView().findViewById(R.id.snackbar_text).getParent();
+                    ProgressBar item = new ProgressBar(context);
+                    item.setIndeterminate(true);
+                    contentLay.addView(item);
+                    bar.show();
+                    break;
+                case PeerManager.EVENT_LOADING_PEERS_FAILED:
+                    Snackbar failedBar = Snackbar.make(root, R.string.loading_failed, Snackbar.LENGTH_LONG);
+                    failedBar.show();
+                    break;
+                case PeerManager.EVENT_LOADING_PEERS_SELECTED_PEERS_CHANGED:
+                    int selectedPeers = intent.getIntExtra(EXTRA_SELECTED_PEERS, 0);
+                    if (selectedPeers == 0 && getConnectToPublicPeers(getContext()) && !getMulticast(getContext())) {
+                        YggmailServiceCommand.stopYggmail(context);
+                    } else if (YggmailOberservable.getInstance().getStatus() == YggmailOberservable.Status.Running) {
+                        YggmailServiceCommand.stopYggmail(context);
+                        YggmailServiceCommand.startYggmail(context);
+                    }
+                    break;
+                case PeerManager.EVENT_LOADING_PEERS_FINISHED:
+                    Snackbar finishedBar = Snackbar.make(root, R.string.loading_finished, Snackbar.LENGTH_SHORT);
+                    finishedBar.show();
+                    PreferenceHelper.setLastUpdate(context, System.currentTimeMillis());
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

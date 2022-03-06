@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/yellow_700"
+    android:id="@+id/main_content_container"
     tools:context="chat.delta.androidyggmail.MainFragment">
 
     <androidx.constraintlayout.widget.Guideline

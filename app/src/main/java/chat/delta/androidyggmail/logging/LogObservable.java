@@ -1,6 +1,12 @@
 package chat.delta.androidyggmail.logging;
 
+import android.text.format.DateUtils;
+import android.util.Log;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Observable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,6 +29,12 @@ public class LogObservable extends Observable {
             instance = new LogObservable();
         }
         return instance;
+    }
+
+    public void addLog(String tag, String message) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault());
+        String result = dateFormat.format(System.currentTimeMillis()) + " " + tag + " " + message;
+        addLog(result);
     }
 
     public void addLog(String message) {

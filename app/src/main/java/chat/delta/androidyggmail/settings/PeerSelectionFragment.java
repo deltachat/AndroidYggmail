@@ -29,7 +29,7 @@ import static chat.delta.androidyggmail.settings.PreferenceHelper.getMulticast;
 
 import chat.delta.androidyggmail.MainActivity;
 import chat.delta.androidyggmail.R;
-import chat.delta.androidyggmail.YggmailOberservable;
+import chat.delta.androidyggmail.YggmailObservable;
 import chat.delta.androidyggmail.YggmailServiceCommand;
 import chat.delta.androidyggmail.databinding.FragmentPeerSelectionBinding;
 
@@ -120,7 +120,7 @@ public class PeerSelectionFragment extends Fragment {
                    int selectedPeers = intent.getIntExtra(EXTRA_SELECTED_PEERS, 0);
                    if (selectedPeers == 0 && getConnectToPublicPeers(getContext()) && !getMulticast(getContext())) {
                        YggmailServiceCommand.stopYggmail(context);
-                   } else if (YggmailOberservable.getInstance().getStatus() == YggmailOberservable.Status.Running) {
+                   } else if (YggmailObservable.getInstance().getStatus() == YggmailObservable.Status.Running) {
                        YggmailServiceCommand.stopYggmail(context);
                        YggmailServiceCommand.startYggmail(context);
                    }

@@ -5,6 +5,9 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.net.NetworkRequest;
+import android.net.wifi.SupplicantState;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 
 import androidx.annotation.NonNull;
 
@@ -20,7 +23,7 @@ public class NetworkStateManager {
         connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         networkStateCallback = new NetworkStateCallback();
         connectivityManager.registerNetworkCallback(registerInternetConnectivity(), networkStateCallback);
-        wifiStateCallback = new WifiStateCallback();
+        wifiStateCallback = new WifiStateCallback((WifiManager) context.getApplicationContext().getSystemService(Context.WIFI_SERVICE));
         connectivityManager.registerNetworkCallback(registerWifiNetwork(), wifiStateCallback);
     }
 
@@ -58,18 +61,31 @@ public class NetworkStateManager {
     }
 
     public static class WifiStateCallback extends ConnectivityManager.NetworkCallback {
+
+        private final WifiManager wifiManager;
+        private String ssid;
+
+        public WifiStateCallback(WifiManager wifiManager) {
+            this.wifiManager = wifiManager;
+        }
+
         @Override
         public void onAvailable(@NonNull Network network) {
             super.onAvailable(network);
+            WifiInfo wifiInfo;
+            wifiInfo = wifiManager.getConnectionInfo();
+            if (wifiInfo.getSupplicantState() == SupplicantState.COMPLETED) {
+                ssid = wifiInfo.getSSID();
+            }
             LogObservable.getInstance().addLog(TAG, "Wifi connected");
-            YggmailObservable.getInstance().setWifiStatus(YggmailObservable.WifiStatus.Connected);
+            YggmailObservable.getInstance().setWifiStatus(YggmailObservable.WifiStatus.Connected, ssid);
         }
 
         @Override
         public void onLost(@NonNull Network network) {
             super.onLost(network);
             LogObservable.getInstance().addLog(TAG, "Wifi disconnected");
-            YggmailObservable.getInstance().setWifiStatus(YggmailObservable.WifiStatus.Disconnected);
+            YggmailObservable.getInstance().setWifiStatus(YggmailObservable.WifiStatus.Disconnected, null);
         }
     }
 }

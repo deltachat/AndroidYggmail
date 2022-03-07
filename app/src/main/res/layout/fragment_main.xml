@@ -9,7 +9,16 @@
     tools:context="chat.delta.androidyggmail.MainFragment">
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_vertical_first"
+        android:id="@+id/guideline_vertical_connection_detail_start"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintGuide_percent="0.0875"
+        />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_vertical_one"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
@@ -17,12 +26,20 @@
         app:layout_constraintGuide_percent="0.16"
         />
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_vertical_last"
+        android:id="@+id/guideline_vertical_two"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintGuide_percent="0.84"
+        />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_vertical_connection_detail_end"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintGuide_percent="0.9125"
         />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -45,7 +62,7 @@
         android:src="@drawable/ic_leaf_yggmail_black_transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/guideline_vertical_first"
+        app:layout_constraintStart_toStartOf="@id/guideline_vertical_one"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.95"
         >
@@ -58,15 +75,191 @@
         android:layout_height="wrap_content"
         android:text="@string/state_initial"
         android:textStyle="bold"
+        android:maxLines="5"
+        android:ellipsize="end"
         android:gravity="center_horizontal"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/guideline_vertical_last"
-        app:layout_constraintStart_toStartOf="@id/guideline_vertical_first"
+        app:layout_constraintEnd_toEndOf="@id/guideline_vertical_two"
+        app:layout_constraintStart_toStartOf="@id/guideline_vertical_one"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.225"
+        app:layout_constraintVertical_bias="0.1"
 
         />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/connection_details_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        app:layout_constraintStart_toStartOf="@id/guideline_vertical_connection_detail_start"
+        app:layout_constraintEnd_toEndOf="@id/guideline_vertical_connection_detail_end"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintBottom_toTopOf="@id/button_start"
+        app:layout_constraintVertical_bias="0.2"
+        android:weightSum="2"
+        >
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/local_peers_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:weightSum="2"
+            >
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/local_peers"/>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_weight="1"
+                >
+
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="0dp"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    >
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/image_wifi"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/ic_wifi"
+                        android:visibility="visible"
+                        />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/wifi_ssid"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal|bottom"
+                        android:text="ssid"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        app:autoSizeTextType="uniform"
+                        app:autoSizeMinTextSize="9sp"
+                        app:autoSizeMaxTextSize="13sp"
+                        app:autoSizeStepGranularity="1sp"
+                        />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="0dp"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    >
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_local_peer_counter"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:textSize="40sp"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textStyle="bold"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                        />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal|bottom"
+                        android:text="@string/connected_peers"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        app:autoSizeTextType="uniform"
+                        app:autoSizeMinTextSize="9sp"
+                        app:autoSizeMaxTextSize="13sp"
+                        app:autoSizeStepGranularity="1sp"
+                        />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/public_peers_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/public_peers"/>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/image_connectivity"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:src="@drawable/ic_web"
+                        android:visibility="visible"
+                        />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_connectivity_subtitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal|bottom"
+                        app:text="ssid"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        app:autoSizeTextType="uniform"
+                        app:autoSizeMinTextSize="9sp"
+                        app:autoSizeMaxTextSize="13sp"
+                        app:autoSizeStepGranularity="1sp"
+                        />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_public_peer_counter"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:textSize="40sp"
+                        android:gravity="center"
+                        android:text="0"
+                        android:textStyle="bold"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                        />
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal|bottom"
+                        android:text="@string/connected_peers"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        app:autoSizeTextType="uniform"
+                        app:autoSizeMinTextSize="9sp"
+                        app:autoSizeMaxTextSize="13sp"
+                        app:autoSizeStepGranularity="1sp"
+                        android:layout_gravity="bottom"
+                        />
+                </androidx.appcompat.widget.LinearLayoutCompat>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 
     <Button
         android:id="@+id/button_start"

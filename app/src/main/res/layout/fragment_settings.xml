@@ -24,7 +24,7 @@
             android:id="@+id/switch_local_network"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/local_network"
+            android:text="@string/find_peers_local_network"
             android:layout_marginTop="@dimen/text_margin"
             />
 
@@ -44,7 +44,7 @@
             android:id="@+id/switch_public_peers"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/public_peers"
+            android:text="@string/find_public_peers"
             android:layout_marginTop="@dimen/text_margin"
             />
         <TextView

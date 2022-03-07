@@ -1,6 +1,9 @@
 package chat.delta.androidyggmail;
 
 import static android.content.Intent.CATEGORY_DEFAULT;
+import static android.view.View.GONE;
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
 import static chat.delta.androidyggmail.settings.PeerManager.EXTRA_SELECTED_PEERS;
 import static chat.delta.androidyggmail.settings.PreferenceHelper.getAccountName;
 import static chat.delta.androidyggmail.settings.PreferenceHelper.getConnectToPublicPeers;
@@ -29,6 +32,8 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.Observable;
 import java.util.Observer;
 
+import chat.delta.androidyggmail.YggmailObservable.NetworkStatus;
+import chat.delta.androidyggmail.YggmailObservable.WifiStatus;
 import chat.delta.androidyggmail.databinding.FragmentMainBinding;
 import chat.delta.androidyggmail.settings.PeerManager;
 import chat.delta.androidyggmail.settings.PreferenceHelper;
@@ -47,7 +52,7 @@ public class MainFragment extends Fragment implements Observer {
             Bundle savedInstanceState
     ) {
 
-        YggmailOberservable.getInstance().addObserver(this);
+        YggmailObservable.getInstance().addObserver(this);
         binding = FragmentMainBinding.inflate(inflater, container, false);
         setHasOptionsMenu(true);
 
@@ -57,7 +62,7 @@ public class MainFragment extends Fragment implements Observer {
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        peerManager = new PeerManager(getContext());
+        peerManager = new PeerManager(view.getContext());
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(PeerManager.EVENT_LOADING_PEERS_STARTED);
         intentFilter.addAction(PeerManager.EVENT_LOADING_PEERS_FINISHED);
@@ -65,14 +70,14 @@ public class MainFragment extends Fragment implements Observer {
         intentFilter.addAction(PeerManager.EVENT_LOADING_PEERS_SELECTED_PEERS_CHANGED);
         intentFilter.addCategory(CATEGORY_DEFAULT);
         broadcastReceiver = new PeerBroadcastReceiver();
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(broadcastReceiver, intentFilter);
+        LocalBroadcastManager.getInstance(view.getContext()).registerReceiver(broadcastReceiver, intentFilter);
 
         updateUI();
 
         binding.buttonStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switch (YggmailOberservable.getInstance().getStatus()) {
+                switch (YggmailObservable.getInstance().getStatus()) {
                     case Running:
                         YggmailServiceCommand.stopYggmail(MainFragment.this.getContext());
                         break;
@@ -92,25 +97,40 @@ public class MainFragment extends Fragment implements Observer {
     }
 
     private void updateUI() {
-        switch (YggmailOberservable.getInstance().getStatus()) {
+        switch (YggmailObservable.getInstance().getStatus()) {
             case Error:
                 binding.buttonStart.setEnabled(true);
                 binding.buttonStart.setText(R.string.restart);
                 binding.title.setText(R.string.state_error);
+                binding.tvLocalPeerCounter.setText(R.string.invalid);
+                binding.tvPublicPeerCounter.setText(R.string.invalid);
                 break;
             case Stopped:
                 binding.buttonStart.setEnabled(true);
                 binding.buttonStart.setText(R.string.start);
                 binding.title.setText(getAccountName(getContext()).isEmpty() ?
                         R.string.state_initial : R.string.state_off);
+                binding.connectionDetailsContainer.setVisibility(INVISIBLE);
                 break;
             case ShuttingDown:
                 binding.buttonStart.setEnabled(false);
+                binding.connectionDetailsContainer.setVisibility(INVISIBLE);
                 break;
             case Running:
                 binding.buttonStart.setEnabled(true);
                 binding.buttonStart.setText(R.string.stop);
                 binding.title.setText(R.string.state_running);
+                binding.connectionDetailsContainer.setVisibility(VISIBLE);
+                binding.tvPublicPeerCounter.setText(String.valueOf(YggmailObservable.getInstance().getPublicPeerConnectionCount()));
+                binding.tvLocalPeerCounter.setText(String.valueOf(YggmailObservable.getInstance().getLocalPeerConnectionCount()));
+                binding.imageWifi.setImageResource(YggmailObservable.getInstance().getWifiStatus() == WifiStatus.Connected ? R.drawable.ic_wifi : R.drawable.ic_wifi_off);
+                boolean hasInternetConnectivity = YggmailObservable.getInstance().getNetworkStatus() == NetworkStatus.Connected;
+                binding.tvConnectivitySubtitle.setText(hasInternetConnectivity ? null : getString(R.string.no_internet));
+                binding.imageConnectivity.setImageResource(hasInternetConnectivity ? R.drawable.ic_web : R.drawable.ic_web_off);
+                String wifiSSID = YggmailObservable.getInstance().getWifiSsid();
+                binding.wifiSsid.setText(wifiSSID == null ? getString(R.string.off) : wifiSSID);
+                binding.localPeersContainer.setVisibility(PreferenceHelper.getMulticast(getContext()) ? VISIBLE : GONE);
+                binding.publicPeersContainer.setVisibility(PreferenceHelper.getConnectToPublicPeers(getContext()) ? VISIBLE : GONE);
                 break;
             default:
                 break;
@@ -148,14 +168,14 @@ public class MainFragment extends Fragment implements Observer {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
-        YggmailOberservable.getInstance().deleteObserver(this);
+        YggmailObservable.getInstance().deleteObserver(this);
         LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(broadcastReceiver);
     }
 
     @Override
     public void update(Observable o, Object arg) {
-        if (o instanceof YggmailOberservable) {
-            updateUI();
+        if (o instanceof YggmailObservable) {
+            Util.runOnMain(this::updateUI);
         }
     }
 
@@ -181,7 +201,7 @@ public class MainFragment extends Fragment implements Observer {
                     int selectedPeers = intent.getIntExtra(EXTRA_SELECTED_PEERS, 0);
                     if (selectedPeers == 0 && getConnectToPublicPeers(getContext()) && !getMulticast(getContext())) {
                         YggmailServiceCommand.stopYggmail(context);
-                    } else if (YggmailOberservable.getInstance().getStatus() == YggmailOberservable.Status.Running) {
+                    } else if (YggmailObservable.getInstance().getStatus() == YggmailObservable.Status.Running) {
                         YggmailServiceCommand.stopYggmail(context);
                         YggmailServiceCommand.startYggmail(context);
                     }

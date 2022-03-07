@@ -21,8 +21,10 @@
     <string name="current_session">Current session</string>
     <string name="copied_to_clipboard">Copied to clipboard.</string>
     <string name="choose_app_to_share">Choose an app to share the logs</string>
-    <string name="local_network">Find peers in local network</string>
-    <string name="public_peers">Connect to public peers</string>
+    <string name="find_peers_local_network">Find peers in local network</string>
+    <string name="find_public_peers">Connect to public peers</string>
+    <string name="local_peers">Local peers</string>
+    <string name="public_peers">Public peers</string>
     <string name="description_local_network">Enable this option to communicate with other users within the same wifi or local network.</string>
     <string name="description_public_peers">Enable this option if you want to communicate with users outside of your local network</string>
     <string name="add_public_peer">Add public peer</string>
@@ -54,4 +56,8 @@
     <string name="password">Password:</string>
     <string name="start_to_create_user">Tap the start button on the main page to create an account.</string>
     <string name="loading_finished">Peer list successfully loaded.</string>
+    <string name="connected_peers">Connections</string>
+    <string name="invalid" translatable="false">---</string>
+    <string name="off">Off</string>
+    <string name="no_internet">No internet</string>
 </resources>

@@ -74,7 +74,7 @@ public class YggmailService extends Service {
         yggmail.setLogger(new Logger() {
             @Override
             public void logError(long l, String s) {
-                YggmailOberservable.getInstance().setStatus(YggmailOberservable.Status.Error);
+                YggmailObservable.getInstance().setStatus(YggmailObservable.Status.Error);
                 Log.e("YGGMAIL error", s);
                 fileLogger.send(s);
 
@@ -108,9 +108,9 @@ public class YggmailService extends Service {
             Log.d(TAG, "onStartCommand ACTION_STOP");
 
             if (yggmail != null) {
-                YggmailOberservable.getInstance().setStatus(YggmailOberservable.Status.ShuttingDown);
+                YggmailObservable.getInstance().setStatus(YggmailObservable.Status.ShuttingDown);
                 yggmail.stop();
-                YggmailOberservable.getInstance().setStatus(YggmailOberservable.Status.Stopped);
+                YggmailObservable.getInstance().setStatus(YggmailObservable.Status.Stopped);
             }
 
             notificationManager.cancelNotifications();
@@ -125,7 +125,7 @@ public class YggmailService extends Service {
         boolean isInitial = PreferenceHelper.getAccountName(getApplicationContext()).isEmpty();
         if (Yggmail.Stopped == yggmail.getState()) {
 
-            YggmailOberservable.getInstance().setStatus(YggmailOberservable.Status.Running);
+            YggmailObservable.getInstance().setStatus(YggmailObservable.Status.Running);
             Log.d(TAG, getApplicationContext().getFilesDir().getPath()+"/yggmail.db");
             yggmail.setDatabaseName(getApplicationContext().getFilesDir().getPath()+"/yggmail.db");
 

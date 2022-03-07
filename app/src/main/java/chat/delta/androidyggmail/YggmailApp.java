@@ -4,11 +4,13 @@ import android.app.Application;
 
 public class YggmailApp extends Application {
 
-    private YggmailOberservable yggmailOberservable;
+    private YggmailObservable yggmailObservable;
+    private NetworkStateManager networkStateManager;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        this.yggmailOberservable = YggmailOberservable.getInstance();
+        this.yggmailObservable = YggmailObservable.getInstance();
+        this.networkStateManager = new NetworkStateManager(this);
     }
 }

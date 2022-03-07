@@ -1,11 +1,13 @@
 package chat.delta.androidyggmail.logging;
 
+import androidx.annotation.NonNull;
+
 public class LogItem {
     public final String content;
     public final String tag;
     public final String timestamp;
 
-    public LogItem(String timestamp, String tag, String content) {
+    public LogItem(String timestamp, String tag, @NonNull String content) {
         this.timestamp = timestamp;
         this.tag = tag;
         this.content = content.trim();
